@@ -1,0 +1,51 @@
+<template>
+  <el-menu
+    :default-active="$route.path"
+    class="el-menu-vertical-demo"
+    :collapse="true"
+    @open="handleOpen"
+    @close="handleClose"
+    @select="handleSelect"
+  >
+    <!-- 使用 v-for 动态渲染菜单项 -->
+    <el-menu-item
+      v-for="item in menuItems"
+      :key="item.index"
+      :index="item.index"
+      :disabled="item.disabled"
+      class="vertical-text"
+    >
+      <el-icon><document /></el-icon>
+      <template #title>{{ item.label }}</template>
+    </el-menu-item>
+  </el-menu>
+</template>
+
+<script setup>
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+const handleSelect = (index) => {
+  router.push(index) // 点击菜单时切换路由
+}
+defineProps({
+  menuItems: {
+    type: Array,
+    required: true,
+    default: () => []
+  }
+})
+const handleOpen = (key, keyPath) => {
+  console.log(key, keyPath)
+}
+const handleClose = (key, keyPath) => {
+  console.log(key, keyPath)
+}
+</script>
+
+<style>
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  padding-top: 20px;
+  min-height: 350px;
+}
+</style>
