@@ -12,3 +12,9 @@ declare module 'virtual:svg-icons-register' {
   const content: void
   export default content
 }
+// declare module 'element-plus' {
+//   export const ElMessage: (typeof import('element-plus'))['ElMessage']
+// }
+// declare global {
+//   const ElMessage: (typeof import('element-plus'))['ElMessage']
+// }

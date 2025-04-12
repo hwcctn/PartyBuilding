@@ -1,12 +1,13 @@
 <template>
   <div class="step-container">
     <el-check-tag
-      v-if="stateCart.bottomText == 'NotStarted'"
+      v-if="stateCart.bottom_text == 'NotStarted'"
       checked
       type="info"
+      @click="goToDetial(stateCart.step_id + '')"
     >
-      <div class="step-text-no top-text">{{ stateCart.topText }}</div>
-      <div class="step-text-no middle-text">{{ stateCart.middleText }}</div>
+      <div class="step-text-no top-text">{{ stateCart.top_text }}</div>
+      <div class="step-text-no middle-text">{{ stateCart.middle_text }}</div>
       <div class="step-text-no bottom-text">
         <el-button type="info" round>未开始</el-button>
       </div>
@@ -16,19 +17,19 @@
       round
       checked
       type="primary"
-      @click="goToDetial('1', '1')"
+      @click="goToDetial(stateCart.step_id + '')"
     >
-      <div class="step-text top-text">{{ stateCart.topText }}</div>
-      <div class="step-text middle-text">{{ stateCart.middleText }}</div>
+      <div class="step-text top-text">{{ stateCart.top_text }}</div>
+      <div class="step-text middle-text">{{ stateCart.middle_text }}</div>
       <div class="step-text bottom-text">
         <el-icon
           color="rgb(51.2, 126.4, 204)"
-          v-if="stateCart.bottomText == 'Completed'"
+          v-if="stateCart.bottom_text == 'Completed'"
         >
           <CircleCheckFilled />
         </el-icon>
         <el-button
-          v-if="stateCart.bottomText == 'InProgress'"
+          v-if="stateCart.bottom_text == 'InProgress'"
           type="primary"
           round
           >进行中</el-button
@@ -40,12 +41,17 @@
 
 <script setup lang="ts">
 import { defineProps } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
+// import { useStepCardStore } from '@/stores'
 const router = useRouter()
+const route = useRoute()
+// const stepCardStore = useStepCardStore()
+// const { changeCardState } = stepCardStore
 interface StateCartItem {
-  topText: string
-  middleText: string
-  bottomText: string
+  step_id: number
+  top_text: string
+  middle_text: string
+  bottom_text: string
 }
 interface Props {
   stateCart: StateCartItem
@@ -53,9 +59,15 @@ interface Props {
 const prop = defineProps<Props>()
 const { stateCart } = prop
 // console.log(stateCart)
-const goToDetial = (uid: string, sid: string) => {
+const goToDetial = (sid: string) => {
   console.log('123')
-  router.push(`/progress/${uid}/${sid}`)
+  router.push({
+    path: `${route.path}/${sid}`,
+    query: {
+      topText: stateCart.top_text,
+      middleText: stateCart.middle_text
+    }
+  })
 }
 </script>
 

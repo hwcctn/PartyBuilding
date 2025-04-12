@@ -13,7 +13,7 @@
         :router="true"
       >
         <el-menu-item>
-          <p class="img-caption">SAI智慧党建</p>
+          <p class="img-caption">SAI智慧党务</p>
         </el-menu-item>
         <el-menu-item>
           <el-icon><MagicStick /></el-icon>
@@ -27,10 +27,10 @@
         </template>
       </el-menu>
     </el-col>
-    <el-col :span="1">
+    <!-- <el-col :span="1">
       <div class="grid-content ep-bg-purple" />
-    </el-col>
-    <el-col :span="1">
+    </el-col> -->
+    <el-col :span="2">
       <el-icon :size="23" color="black">
         <Bell />
       </el-icon>
@@ -44,19 +44,24 @@
       </div>
     </el-col>
     <el-col :span="1">
-      <div class="grid-content ep-bg-purple" />
+      <!-- <div class="grid-content ep-bg-purple" /> -->
+      <el-button link @click="goToLogin">退出登录 </el-button>
     </el-col>
   </el-row>
 </template>
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 // // 设置路由高亮
 const route = useRoute()
 const activeIndex = ref(route.meta.activeMenu || route.path)
-
+// 退出登录
+const router = useRouter()
+const goToLogin = () => {
+  router.push('/login')
+}
 // // 路由监听
 watch(route, (newRoute) => {
   activeIndex.value = newRoute.meta.activeMenu || newRoute.path
@@ -127,6 +132,8 @@ defineProps<{
   font-family: 'Lobster', cursive;
 }
 
+.el-col-2,
+.el-col-2.is-guttered,
 .el-col-1,
 .el-col-1.is-guttered {
   display: flex;

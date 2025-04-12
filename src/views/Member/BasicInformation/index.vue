@@ -14,7 +14,14 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
 import Info from './info/index.vue'
+import { useMemberStore } from '@/stores/memberInfo/memberInfo'
+const memberStore = useMemberStore()
+const { getMemberAction } = memberStore
+onMounted(async () => {
+  await getMemberAction()
+})
 </script>
 
 <style scoped>

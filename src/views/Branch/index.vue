@@ -9,10 +9,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useUserStore } from '@/stores'
-const userStore = useUserStore()
-const { changeRole } = userStore
-changeRole('Branch')
+
 const Menudata = ref({
   title: '支部页面',
   menu: [

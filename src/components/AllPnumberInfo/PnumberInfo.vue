@@ -53,7 +53,7 @@
               </el-select>
             </template>
             <template #append>
-              <el-button>
+              <el-button @click="getMemberUsersAction">
                 <el-icon><Search /></el-icon>
               </el-button>
             </template>
@@ -67,67 +67,68 @@
             style="width: 1600px"
             :row-class-name="tableRowClassName"
           >
-            <el-table-column width="10" v-if="role === 'partyCommittee'">
+            <el-table-column width="10" v-if="role === 'committee'">
               <template #default="scope">
                 <el-badge is-dot v-if="scope.row.isDot"></el-badge>
               </template>
             </el-table-column>
 
-            <el-table-column prop="序号" label="序号" sortable width="100" />
-            <el-table-column prop="姓名" label="姓名" width="150">
+            <el-table-column prop="id" label="序号" sortable width="100" />
+            <el-table-column prop="name" label="姓名" width="150">
             </el-table-column>
             <el-table-column
-              prop="所在支部"
+              prop="organization"
               label="所在支部"
               sortable
               width="250"
               show-overflow-tooltip
+              :formatter="formatter"
               :filters="[
-                { text: '教工', value: '人工智能学院党委教工党组织' },
-                { text: '本科生1', value: '人工智能学院党委本科生党组织1' },
-                { text: '本科生2', value: '人工智能学院党委本科生党组织2' },
-                { text: '研究生', value: '人工智能学院党委研究生党组织' }
+                { text: '本科生1', value: '0' },
+                { text: '本科生2', value: '1' },
+                { text: '教工', value: '2' },
+                { text: '研究生', value: '3' }
               ]"
               :filter-method="filterGroup"
             />
             <el-table-column
-              prop="性别"
+              prop="sex"
               label="性别"
               width="100"
               show-overflow-tooltip
             />
             <el-table-column
-              prop="民族"
+              prop="nation"
               label="民族"
               width="100"
               show-overflow-tooltip
             />
             <el-table-column
-              prop="籍贯"
+              prop="origin"
               label="籍贯"
               width="200"
               show-overflow-tooltip
             />
             <el-table-column
-              prop="出生日期"
+              prop="birthday"
               label="出生日期"
               width="200"
               show-overflow-tooltip
             />
             <el-table-column
-              prop="身份证号"
+              prop="identity_id"
               label="身份证号"
               width="250"
               show-overflow-tooltip
             />
             <el-table-column
-              prop="学历"
+              prop="education"
               label="学历"
               width="150"
               show-overflow-tooltip
             />
             <el-table-column
-              prop="个人身份"
+              prop="position"
               label="个人身份"
               width="200"
               show-overflow-tooltip
@@ -162,19 +163,23 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { usePnumberStore, useUserStore } from '@/stores/index.ts'
+import { getMemberUsers } from './service'
+import { ElMessage } from 'element-plus'
+import { Search } from '@element-plus/icons-vue'
 const pnumberStore = usePnumberStore()
-const { GroupTree, Modeldata } = pnumberStore
+const { GroupTree } = pnumberStore
+let Modeldata = ref([])
 const { role } = useUserStore()
 const router = useRouter()
-const filterGroup = (value, row) => {
-  return row.所在支部 === value
+const filterGroup = (value: any, row: any) => {
+  return String(row.organization) === value
 }
-const tableRowClassName = ({ row }) => {
-  switch (row.所在支部) {
+const tableRowClassName = ({ row }: any) => {
+  switch (row.organization) {
     case '人工智能学院党委教工党组织':
       return 'teacher-row'
     case '人工智能学院党委本科生党组织1':
@@ -187,13 +192,26 @@ const tableRowClassName = ({ row }) => {
       return ''
   }
 }
+const formatter = (_row: any, column: any, cellValue: number) => {
+  if (column.property === 'organization') {
+    const map: Record<number, string> = {
+      0: '本科生1',
+      1: '本科生2',
+      2: '教工',
+      3: '研究生'
+    }
+    return map[cellValue] ?? cellValue
+  }
+  return String(cellValue)
+}
+
 const input1 = ref('')
 const input2 = ref('')
 const select = ref('1')
 // 表格设置
-const handleClick = (row) => {
-  console.log(row.序号)
-  router.push({ path: `/progress/${row.序号}` })
+const handleClick = (row: any) => {
+  console.log(row.id)
+  router.push({ path: `/progress/${row.id}` })
 }
 let tableData = ref([])
 // 分页设置
@@ -202,27 +220,46 @@ let size = ref(15)
 
 let total = ref()
 const getTableData = () => {
-  tableData.value = Modeldata.slice(
+  tableData.value = Modeldata.value.slice(
     (page.value - 1) * size.value,
     page.value * size.value
   )
-  console.log(tableData.value, Modeldata)
+  // console.log('数据展示', tableData.value, Modeldata.value)
 
-  total.value = Modeldata.length
+  total.value = Modeldata.value.length
 }
 // page改变时的回调函数
-const currentChange = (val) => {
+const currentChange = (val: any) => {
   console.log('翻页，当前为第几页', val)
   page.value = val
   getTableData()
 }
-const sizeChange = (val) => {
+const sizeChange = (val: any) => {
   console.log('改变每页多少条，当前一页多少条数据', val)
   size.value = val
   page.value = 1
   getTableData()
 }
-onMounted(() => {
+async function getMemberUsersAction() {
+  let searchParams = {}
+  try {
+    if (input2.value) {
+      if (select.value === '1') searchParams = { name: input2.value }
+      else if (select.value === '2')
+        searchParams = { identity_id: input2.value }
+    }
+    const res = await getMemberUsers(searchParams)
+    Modeldata.value = res.msg
+    console.log('结果', res)
+    getTableData()
+  } catch (err) {
+    ElMessage.error(`获取数据失败，请重试${err}`)
+  }
+}
+onMounted(async () => {
+  const res = await getMemberUsers()
+  console.log('党员信息数据', res)
+  Modeldata.value = res.msg
   getTableData()
 })
 </script>
@@ -249,7 +286,7 @@ onMounted(() => {
 </style>
 <style lang="scss" scoped>
 .common-layout {
-  width: 1600px;
+  width: auto;
 }
 
 .GroupList {

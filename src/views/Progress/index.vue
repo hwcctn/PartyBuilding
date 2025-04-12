@@ -9,8 +9,8 @@
       </el-header>
       <el-container>
         <!-- 左侧的 el-tabs -->
-        <el-aside width="200px" v-if="!$route.meta.hideStepCart">
-          <el-tabs
+        <el-aside width="100%" class="custom-aside">
+          <!-- <el-tabs
             v-model="activeTab"
             tab-position="left"
             style="height: 100%"
@@ -19,14 +19,29 @@
             <template v-for="(item, index) in menuData" :key="index">
               <el-tab-pane :label="item.title" :name="index"></el-tab-pane>
             </template>
-          </el-tabs>
+          </el-tabs> -->
+          <!-- 重写样式 -->
+          <el-menu
+            class="el-menu-vertical-demo"
+            @select="handleSelect"
+            default-active="0"
+          >
+            <el-menu-item
+              v-for="(item, index) in menuData"
+              :key="index"
+              :index="index + ''"
+            >
+              <el-icon><document /></el-icon>
+              <template #title>{{ item.title }}</template>
+            </el-menu-item>
+          </el-menu>
         </el-aside>
 
         <!-- 右侧的内容区 -->
         <el-main>
           <div class="content-area">
             <div class="baseInfo">
-              <BaseInfo />
+              <BaseInfo v-if="baseInfo.length > 0" :memberInfo="baseInfo" />
             </div>
             <div class="developmen">
               <div class="title">
@@ -40,8 +55,8 @@
               <div class="stage">
                 <div class="stepCart" v-if="!$route.meta.hideStepCart">
                   <template
-                    v-for="(item, index) in getContentByTab(activeTab)"
-                    :key="index"
+                    v-for="item in getContentByTab(activeTab)"
+                    :key="item.step_id"
                   >
                     <StepContainer :stateCart="item" />
                   </template>
@@ -58,58 +73,108 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import StepContainer from '@/views/Progress/components/StepContainer.vue'
-import { ref, computed } from 'vue'
-import { RouterView, useRouter } from 'vue-router'
-
-// const route = useRoute()
-// const pathName = computed(() => route.name)
+import { ref, onMounted } from 'vue'
+import { RouterView, useRouter, useRoute } from 'vue-router'
+import { getUserStatus } from './service'
+import type { StepGroup } from './service/style'
+import type { UserInfoItem } from './service/style'
+// 用pinia提供
+// import { useBaseInfoStore } from './store/baseInfo.store'
+// import { storeToRefs } from 'pinia'
+// const baseInfoSote = useBaseInfoStore()
+// const { baseInfo } = storeToRefs(baseInfoSote)
+// 不用pinia
+const baseInfo = ref<UserInfoItem[]>([])
 const router = useRouter()
+const route = useRoute()
+console.log('路由', route)
+const { role, uid } = route.params
 const activeTab = ref(0) // 默认选中第一个标签
-
-const menuData = computed(() => {
-  return [
-    {
-      title: '申请入党',
-      stateCartData: [
-        {
-          topText: '第一步',
-          middleText: '递交入党申请书',
-          bottomText: 'Completed' //NotStarted 未开始；InProgress 进行中；Completed 已完成
-        },
-        {
-          topText: '第二步',
-          middleText: '党组织派人谈话',
-          bottomText: 'Completed'
-        }
-      ]
-    },
-    {
-      title: '入党积极分子的确定和培养教育',
-      content: '这是入党积极分子的确定和培养教育相关内容...'
-    },
-    {
-      title: '发展对象的确定和考察',
-      content: '这是发展对象的确定和考察相关内容...'
-    },
-    {
-      title: '预备党员的接收',
-      content: '这是预备党员的接收相关内容...'
-    },
-    {
-      title: '预备党员的教育考察和转正',
-      content: '这是预备党员的教育考察和转正相关内容...'
-    }
-  ]
+let menuData = ref<StepGroup[]>([])
+const handleSelect = (val: string) => {
+  activeTab.value = Number(val)
+}
+onMounted(async () => {
+  await getUserStatus(Number(uid), role as string).then((res) => {
+    console.log('结果', res)
+    menuData.value = res.stepInfo
+    baseInfo.value = res.userInfo
+    console.log('个人基本信息', baseInfo.value)
+    console.log('卡片信息', menuData.value)
+  })
 })
+// const menuData = computed(() => {
+//   return [
+//     {
+//       title: '申请入党',
+//       stateCartData: [
+//         {
+//           stepId: 1,
+//           topText: '第一步',
+//           middleText: '递交入党申请书',
+//           bottomText: 'Completed' //NotStarted 未开始；InProgress 进行中；Completed 已完成
+//         },
+//         {
+//           stepId: 2,
+//           topText: '第二步',
+//           middleText: '党组织派人谈话',
+//           bottomText: 'Completed'
+//         }
+//       ]
+//     },
+//     {
+//       title: '入党积极分子的确定和培养教育',
+//       stateCartData: [
+//         {
+//           stepId: 3,
+//           topText: '第三步',
+//           middleText: '推荐和确定入党积极分子',
+//           bottomText: 'Completed'
+//         },
+//         {
+//           stepId: 4,
+//           topText: '第四步',
+//           middleText: '上级党委备案',
+//           bottomText: 'Completed'
+//         },
+//         {
+//           stepId: 5,
+//           topText: '第五步',
+//           middleText: '指定培养联系人',
+//           bottomText: 'Completed'
+//         },
+//         {
+//           stepId: 6,
+//           topText: '第六步',
+//           middleText: '培养教育考察',
+//           bottomText: 'Completed'
+//         }
+//       ]
+//     },
+//     {
+//       title: '发展对象的确定和考察',
+//       content: '这是发展对象的确定和考察相关内容...'
+//     },
+//     {
+//       title: '预备党员的接收',
+//       content: '这是预备党员的接收相关内容...'
+//     },
+//     {
+//       title: '预备党员的教育考察和转正',
+//       content: '这是预备党员的教育考察和转正相关内容...'
+//     }
+//   ]
+// })
 
 // 根据选中的标签获取内容
-const getContentByTab = (index) => {
-  return menuData.value[index].stateCartData
+const getContentByTab = (index: number) => {
+  // console.log(index)
+  return menuData.value[index]?.StateCartData
 }
-const getTitleByTab = (index) => {
-  return menuData.value[index].title
+const getTitleByTab = (index: number) => {
+  return menuData.value[index]?.title
 }
 
 const goBack = () => {
@@ -146,8 +211,16 @@ const goBack = () => {
 }
 
 .el-aside {
-  width: 200px;
-  background-color: #f5f5f5;
+  width: 260px;
+  /* margin-top: 20px; */
+  background-color: #fff;
+  /* margin-right: 5px; */
+  border-right: 1px solid var(--el-menu-border-color);
+  .el-menu {
+    border: none;
+    padding-top: 20px;
+    min-height: 350px;
+  }
 }
 
 .el-main {
@@ -183,7 +256,6 @@ const goBack = () => {
   font-size: 32px;
   font-weight: 600;
 }
-
 .el-tabs--left .el-tabs__content {
   height: 100%;
 }

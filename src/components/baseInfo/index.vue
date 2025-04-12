@@ -136,7 +136,8 @@ const info = ref({
 <template>
   <div class="main-container">
     <div class="title">
-      <p style="margin: 0; padding-bottom: 10px">基本信息</p>
+      <span style="margin: 0; padding-bottom: 10px">基本信息</span>
+      <el-button @click="outputFile">导出模版</el-button>
     </div>
     <div class="info-container">
       <div class="avater">
@@ -148,10 +149,9 @@ const info = ref({
         />
       </div>
       <div class="right">
-        <div class="name">{{ info.username }}</div>
         <div class="info">
           <el-descriptions class="custom-descriptions">
-            <template v-for="item in info.fields" :key="item">
+            <template v-for="item in info" :key="item">
               <el-descriptions-item
                 style="width: 10px"
                 :label="`${item.label}:`"
@@ -165,27 +165,62 @@ const info = ref({
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
+interface UserInfoItem {
+  label: string
+  value: string
+}
+const props = defineProps<{
+  memberInfo: UserInfoItem[]
+}>()
+console.log('传过来的人员信息', props.memberInfo)
 const avatarSrc =
   'https://img2.baidu.com/it/u=717423697,1047943915&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=1067'
-const info = ref({
-  username: '龚雪竹',
-  fields: [
-    { label: '性别', value: '男' },
-    { label: '民族', value: '汉' },
-    { label: '出生年月日', value: '1999年 11月24日' },
-    { label: '籍贯', value: '重庆荣昌' },
-    { label: '身份证号码', value: '450303199911241229' },
-    { label: '单位、职务或职业', value: '人工智能学院2023级人工智能专业 学生' },
-    { label: '学历 学位', value: '本科学士' },
-    { label: '联系电话', value: '15086744089' },
-    {
-      label: '家庭详细住址',
-      value: '重庆渝北区木耳镇招商雍璟城璟轩沿港二路1号2幢2单元3一2'
-    }
-  ]
-})
+// const info = ref({
+//   username: '龚雪竹',
+//   fields: [
+//     { label: '性别', value: '男' },
+//     { label: '民族', value: '汉' },
+//     { label: '出生年月日', value: '1999年 11月24日' },
+//     { label: '籍贯', value: '重庆荣昌' },
+//     { label: '身份证号码', value: '450303199911241229' },
+//     { label: '单位、职务或职业', value: '人工智能学院2023级人工智能专业 学生' },
+//     { label: '学历 学位', value: '本科学士' },
+//     { label: '联系电话', value: '15086744089' },
+//     {
+//       label: '家庭详细住址',
+//       value: '重庆渝北区木耳镇招商雍璟城璟轩沿港二路1号2幢2单元3一2'
+//     }
+//   ]
+// })
+const info = ref(props.memberInfo)
+import { useRoute } from 'vue-router'
+import { postPDF } from './service'
+const route = useRoute()
+const { role, uid } = route.params
+const outputFile = async () => {
+  const loading = ElLoading.service({
+    lock: true,
+    text: '数据加载中请稍后',
+    background: 'rgba(0, 0, 0, 0.7)'
+  })
+  await postPDF(role as string, uid as string)
+    .then((res) => {
+      loading.close()
+      const downloadUrl = res.msg
+      const link = document.createElement('a')
+      link.href = downloadUrl
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      ElMessage.success('下载成功')
+      console.log(res)
+    })
+    .catch((err) => {
+      ElMessage.error(`下载失败.错误：${err}`)
+    })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -218,7 +253,10 @@ const info = ref({
 }
 
 .title {
-  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
   font-weight: 600;
 }
 

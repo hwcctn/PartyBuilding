@@ -5,6 +5,8 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+
+import { BASE_URL } from './src/service/config/'
 import path from 'path'
 // https://vite.dev/config/
 export default defineConfig({
@@ -15,7 +17,8 @@ export default defineConfig({
       symbolId: 'icon-[dir]-[name]'
     }),
     AutoImport({
-      resolvers: [ElementPlusResolver()]
+      resolvers: [ElementPlusResolver()],
+      dts: 'src/auto-imports.d.ts'
     }),
     Components({
       resolvers: [ElementPlusResolver()]
@@ -25,6 +28,20 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src')
+    }
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: BASE_URL,
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+        // bypass(req, res, options) {
+        //   const finalPath = options.rewrite!(req.url || '') || ''
+        //   const targetUrl = `${options.target}${finalPath}` // 直接拼接字符串
+        //   console.log('代理目标路径:', targetUrl)
+        // }
+      }
     }
   }
 })
