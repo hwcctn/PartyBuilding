@@ -86,9 +86,11 @@ const formLabels = reactive({
 })
 const onSubmit = async () => {
   const res = await addUser(role, formInline)
-  if (res?.msg) {
+  if (res?.msg && typeof res.msg !== 'string') {
     router.push(`/${role}/personnel`)
     ElMessage.success('添加用户成功')
+  } else {
+    ElMessage.error(res.msg)
   }
   // console.log('submit!')
 }

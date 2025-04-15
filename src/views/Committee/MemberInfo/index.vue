@@ -58,6 +58,7 @@
               </el-button>
             </template>
           </el-input>
+          <el-button class="line" plain @click="resetUser">重置</el-button>
         </div>
         <!-- 表格数据 -->
         <div class="centre">
@@ -256,6 +257,13 @@ async function getMemberUsersAction() {
     ElMessage.error(`获取数据失败，请重试${err}`)
   }
 }
+//重置
+const resetUser = () => {
+  input2.value = ''
+  select.value = '1'
+  getMemberUsersAction()
+}
+
 onMounted(async () => {
   const res = await getMemberUsers()
   console.log('党员信息数据', res)
@@ -290,6 +298,7 @@ onMounted(async () => {
 }
 
 .GroupList {
+  height: 50px;
   text-align: left;
   color: rgb(158, 158, 158);
   align-items: center;

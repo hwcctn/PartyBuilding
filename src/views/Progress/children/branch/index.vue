@@ -272,7 +272,7 @@ const formatLabel = () => {
   Object.values(msgData.value).forEach((value) => {
     const label = value.label
     const content = value.content
-    labeledData[label] = content
+    labeledData[label as string] = content
   })
   return labeledData
 }
@@ -290,7 +290,7 @@ const handleSave = async () => {
 const msgData = ref<Record<string, { content: string; label?: string }>>({})
 
 const getBranchStepInfoAction = async () => {
-  await getBranchStepInfo(uid as string, sid as string).then((res) => {
+  await getBranchStepInfo(uid as string, String(sid)).then((res) => {
     msgData.value = res.msg
     console.log('StepInfo结果信息', msgData.value)
   })
@@ -302,7 +302,7 @@ const { changeCardState } = baseInfoSote
 const router = useRouter()
 // 跳转到下一个阶段
 const nextStep = async () => {
-  await putNextStep(uid as string, sid)
+  await putNextStep(uid as string, String(sid))
   await getUserStatus(Number(uid), role as string).then((res) => {
     // menuData.value = res.stepInfo
     // baseInfo.value = res.userInfo

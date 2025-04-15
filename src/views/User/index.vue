@@ -286,6 +286,7 @@ const openEditDialog = (rowdata: any) => {
 }
 // 人员导出
 const exportUser = async () => {
+  console.log('role', role)
   await getExcel(role as string).then((res) => {
     const excelUrl = res.url
     const link = document.createElement('a')

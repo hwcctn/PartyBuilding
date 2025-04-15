@@ -18,9 +18,18 @@ export function addUsers(role: string, formData: FormData) {
   })
 }
 export function addUser(role: string, formData: FormData) {
+  // console.log(formData)
+  let requestUrl = `/${role}/addUser`
+  if (role === 'committee') {
+    requestUrl = `/${role}/adduser`
+  }
+
   return MYRequest.post({
-    url: `/${role}/addUser`,
-    data: formData
+    url: requestUrl,
+    data: formData,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
   })
 }
 export function deleteUserByID(role: string, userId: number) {

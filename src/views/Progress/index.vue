@@ -69,7 +69,7 @@
 <script setup lang="ts">
 import StepContainer from '@/views/Progress/components/StepContainer.vue'
 // import { ref, onMounted, watch } from 'vue'
-import { ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 import { RouterView, useRouter, useRoute } from 'vue-router'
 import { getUserStatus } from './service'
 // import type { StepGroup } from './service/style'
@@ -84,8 +84,8 @@ const baseInfo = ref<UserInfoItem[]>([])
 const router = useRouter()
 const route = useRoute()
 console.log('路由', route)
-// const { role, uid } = route.params
-const { role } = route.params
+const { role, uid } = route.params
+// const { role } = route.params
 const activeTab = ref(0) // 默认选中第一个标签
 import { useStepCardStore } from './store/stepCard.store.ts'
 import { storeToRefs } from 'pinia'
@@ -94,22 +94,31 @@ const { menuData } = storeToRefs(stepCardStore)
 // let menuData = ref<StepGroup[]>([])
 
 // 监听路由参数变化
-watch(
-  () => route.params.uid,
-  async (newUid) => {
-    if (newUid) {
-      // 重置 store 状态
-      menuData.value = []
-      // 重新获取数据
-      await getUserStatus(Number(newUid), role as string).then((res) => {
-        menuData.value = res.stepInfo
-        baseInfo.value = res.userInfo
-        console.log('卡片信息', menuData.value)
-      })
-    }
-  },
-  { immediate: true }
-)
+// watch(
+//   () => route.params.uid,
+//   async (newUid) => {
+//     if (newUid) {
+//       // 重置 store 状态
+//       menuData.value = []
+//       // 重新获取数据
+//       await getUserStatus(Number(newUid), role as string).then((res) => {
+//         menuData.value = res.stepInfo
+//         baseInfo.value = res.userInfo
+//         console.log('卡片信息', menuData.value)
+//       })
+//     }
+//   },
+//   { immediate: true }
+// )
+onMounted(async () => {
+  menuData.value = []
+  // 重新获取数据
+  await getUserStatus(Number(uid), role as string).then((res) => {
+    menuData.value = res.stepInfo
+    baseInfo.value = res.userInfo
+    console.log('卡片信息', menuData.value)
+  })
+})
 
 const handleSelect = (val: string) => {
   activeTab.value = Number(val)

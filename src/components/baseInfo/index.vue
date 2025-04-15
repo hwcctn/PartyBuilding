@@ -209,13 +209,17 @@ const outputFile = async () => {
     .then((res) => {
       loading.close()
       const downloadUrl = res.msg
-      const link = document.createElement('a')
-      link.href = downloadUrl
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      ElMessage.success('下载成功')
-      console.log(res)
+      if (downloadUrl) {
+        const link = document.createElement('a')
+        link.href = downloadUrl
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        ElMessage.success('下载成功')
+        console.log(res)
+      } else {
+        ElMessage.warning(`下载异常`)
+      }
     })
     .catch((err) => {
       ElMessage.error(`下载失败.错误：${err}`)
