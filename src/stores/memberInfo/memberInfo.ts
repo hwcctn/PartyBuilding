@@ -6,11 +6,11 @@ interface MemberInfo {
   name?: string
   account?: string
   password?: string
-  xue_hao: string
-  positon: string
+  xue_hao?: string
+  positon?: string
   sex?: string
-  status: string
-  step: number
+  status?: string
+  step?: number
   nation?: string
   birthday?: string
   origin?: string
@@ -35,13 +35,6 @@ export const useMemberStore = defineStore('member', () => {
     console.log(res)
     return memberInfo.value
   }
-  // const getMemberAction = () => {
-  //   getMemberInfo().then((res) => {
-  //     // console.log(res)
-  //     // changeMemberInfo(res.msg)
-  //     memberInfo.value = res.msg
-  //   })
-  // }
 
   return { memberInfo, image, changeMemberInfo, getMemberAction }
 })

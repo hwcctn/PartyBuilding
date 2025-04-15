@@ -4,15 +4,3 @@ export function getMemberInfo() {
     url: '/stu/userInfo'
   })
 }
-// export function putMemberInfo(newmemberInfo: object) {
-//   return MYRequest.put({
-//     url: '/stu/userInfo',
-//     data: newmemberInfo
-//   })
-// }
-// export function postUploadAvatar(formData: FormData) {
-//   return MYRequest.post({
-//     url: '/stu/upload',
-//     data: formData
-//   })
-// }

@@ -9,22 +9,15 @@
       </el-header>
       <el-container>
         <!-- 左侧的 el-tabs -->
-        <el-aside width="100%" class="custom-aside">
-          <!-- <el-tabs
-            v-model="activeTab"
-            tab-position="left"
-            style="height: 100%"
-            class="demo-tabs"
-          >
-            <template v-for="(item, index) in menuData" :key="index">
-              <el-tab-pane :label="item.title" :name="index"></el-tab-pane>
-            </template>
-          </el-tabs> -->
-          <!-- 重写样式 -->
+        <el-aside
+          width="100%"
+          class="custom-aside"
+          v-if="!$route.meta.hideStepCart"
+        >
           <el-menu
             class="el-menu-vertical-demo"
             @select="handleSelect"
-            default-active="0"
+            :default-active="String(activeTab)"
           >
             <el-menu-item
               v-for="(item, index) in menuData"
@@ -75,10 +68,11 @@
 
 <script setup lang="ts">
 import StepContainer from '@/views/Progress/components/StepContainer.vue'
-import { ref, onMounted } from 'vue'
+// import { ref, onMounted, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { RouterView, useRouter, useRoute } from 'vue-router'
 import { getUserStatus } from './service'
-import type { StepGroup } from './service/style'
+// import type { StepGroup } from './service/style'
 import type { UserInfoItem } from './service/style'
 // 用pinia提供
 // import { useBaseInfoStore } from './store/baseInfo.store'
@@ -90,91 +84,44 @@ const baseInfo = ref<UserInfoItem[]>([])
 const router = useRouter()
 const route = useRoute()
 console.log('路由', route)
-const { role, uid } = route.params
+// const { role, uid } = route.params
+const { role } = route.params
 const activeTab = ref(0) // 默认选中第一个标签
-let menuData = ref<StepGroup[]>([])
+import { useStepCardStore } from './store/stepCard.store.ts'
+import { storeToRefs } from 'pinia'
+const stepCardStore = useStepCardStore()
+const { menuData } = storeToRefs(stepCardStore)
+// let menuData = ref<StepGroup[]>([])
+
+// 监听路由参数变化
+watch(
+  () => route.params.uid,
+  async (newUid) => {
+    if (newUid) {
+      // 重置 store 状态
+      menuData.value = []
+      // 重新获取数据
+      await getUserStatus(Number(newUid), role as string).then((res) => {
+        menuData.value = res.stepInfo
+        baseInfo.value = res.userInfo
+        console.log('卡片信息', menuData.value)
+      })
+    }
+  },
+  { immediate: true }
+)
+
 const handleSelect = (val: string) => {
   activeTab.value = Number(val)
 }
-onMounted(async () => {
-  await getUserStatus(Number(uid), role as string).then((res) => {
-    console.log('结果', res)
-    menuData.value = res.stepInfo
-    baseInfo.value = res.userInfo
-    console.log('个人基本信息', baseInfo.value)
-    console.log('卡片信息', menuData.value)
-  })
-})
-// const menuData = computed(() => {
-//   return [
-//     {
-//       title: '申请入党',
-//       stateCartData: [
-//         {
-//           stepId: 1,
-//           topText: '第一步',
-//           middleText: '递交入党申请书',
-//           bottomText: 'Completed' //NotStarted 未开始；InProgress 进行中；Completed 已完成
-//         },
-//         {
-//           stepId: 2,
-//           topText: '第二步',
-//           middleText: '党组织派人谈话',
-//           bottomText: 'Completed'
-//         }
-//       ]
-//     },
-//     {
-//       title: '入党积极分子的确定和培养教育',
-//       stateCartData: [
-//         {
-//           stepId: 3,
-//           topText: '第三步',
-//           middleText: '推荐和确定入党积极分子',
-//           bottomText: 'Completed'
-//         },
-//         {
-//           stepId: 4,
-//           topText: '第四步',
-//           middleText: '上级党委备案',
-//           bottomText: 'Completed'
-//         },
-//         {
-//           stepId: 5,
-//           topText: '第五步',
-//           middleText: '指定培养联系人',
-//           bottomText: 'Completed'
-//         },
-//         {
-//           stepId: 6,
-//           topText: '第六步',
-//           middleText: '培养教育考察',
-//           bottomText: 'Completed'
-//         }
-//       ]
-//     },
-//     {
-//       title: '发展对象的确定和考察',
-//       content: '这是发展对象的确定和考察相关内容...'
-//     },
-//     {
-//       title: '预备党员的接收',
-//       content: '这是预备党员的接收相关内容...'
-//     },
-//     {
-//       title: '预备党员的教育考察和转正',
-//       content: '这是预备党员的教育考察和转正相关内容...'
-//     }
-//   ]
-// })
 
 // 根据选中的标签获取内容
 const getContentByTab = (index: number) => {
   // console.log(index)
-  return menuData.value[index]?.StateCartData
+  return menuData?.value[index]?.StateCartData
 }
 const getTitleByTab = (index: number) => {
-  return menuData.value[index]?.title
+  return menuData?.value[index]?.title
 }
 
 const goBack = () => {

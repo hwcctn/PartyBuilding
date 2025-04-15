@@ -48,7 +48,7 @@
           <el-button class="line" plainc @click="BatchRemove"
             >批量删除</el-button
           >
-          <el-dropdown>
+          <!-- <el-dropdown>
             <el-button type="primary">
               <el-icon style="margin-right: 10px"><Setting /></el-icon>
               设置显示内容
@@ -62,7 +62,13 @@
                 <el-dropdown-item>研究生党组织</el-dropdown-item>
               </el-dropdown-menu>
             </template>
-          </el-dropdown>
+          </el-dropdown> -->
+          <div class="outport">
+            <el-button type="primary" @click="exportUser">
+              <el-icon style="margin-right: 10px"><Setting /></el-icon>
+              人员导出
+            </el-button>
+          </div>
         </div>
       </div>
       <div class="bottom">
@@ -141,7 +147,7 @@
 import { ref, onMounted } from 'vue'
 // import { Modeldata } from './mockData'
 import { useRouter, useRoute } from 'vue-router'
-import { getUsers, deleteUserByID, deleteUserByIDs } from './service'
+import { getUsers, deleteUserByID, deleteUserByIDs, getExcel } from './service'
 import UpdateUser from './updateUser.vue'
 import type { User } from './type'
 
@@ -195,7 +201,7 @@ const goTonewUser = () => {
 }
 async function getUsersAtion(UsersParams: Record<string, string>) {
   try {
-    const res = await getUsers(role, UsersParams)
+    const res = await getUsers(role as string, UsersParams)
     // console.log('搜索', res)
     Modeldata.value = res.data
     getTableData()
@@ -229,7 +235,7 @@ async function handleDelete(userId: number) {
       cancelButtonText: '取消',
       type: 'warning'
     })
-    await deleteUserByID(role, userId)
+    await deleteUserByID(role as string, userId)
     searchUser()
     ElMessage.success('删除成功')
   } catch (error: any) {
@@ -248,7 +254,7 @@ async function BatchRemove() {
       type: 'warning'
     })
 
-    await deleteUserByIDs(role, { ids: selectedRows.value })
+    await deleteUserByIDs(role as string, { ids: selectedRows.value })
     searchUser()
     ElMessage.success('删除成功')
   } catch (error: any) {
@@ -278,13 +284,20 @@ const openEditDialog = (rowdata: any) => {
   currentEditUser.value = rowdata
   DialogVisible.value = true
 }
+// 人员导出
+const exportUser = async () => {
+  await getExcel(role as string).then((res) => {
+    const excelUrl = res.url
+    const link = document.createElement('a')
+    link.href = excelUrl
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    ElMessage.success('下载成功')
+  })
+}
 // 渲染
 onMounted(async () => {
-  // console.log(route.path)
-  // const res = await getUsers()
-  // console.log('人员管理', res)
-  // Modeldata.value = res.data
-  // getTableData()
   searchUser()
 })
 </script>
@@ -315,9 +328,12 @@ onMounted(async () => {
       margin-top: 10px;
       display: flex;
       align-items: center;
-      .el-dropdown {
+      .outport {
         margin-left: 50%;
       }
+      /* .el-dropdown {
+        margin-left: 50%;
+      } */
     }
     .bottom {
       margin-top: 20px;
@@ -328,10 +344,10 @@ onMounted(async () => {
     margin-left: 30px;
   }
 }
-.el-dropdown-link {
+/* .el-dropdown-link {
   cursor: pointer;
   color: var(--el-color-primary);
   display: flex;
   align-items: center;
-}
+} */
 </style>

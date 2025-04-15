@@ -1,22 +1,48 @@
 <template>
-  <iframe :src="objectUrl" type="application/pdf" class="main"></iframe>
+  <!-- <iframe :src="objectUrl" type="application/pdf" class="main"></iframe> -->
   <!-- <iframe src="/public/test.pdf" type="application/pdf" class="main"></iframe> -->
+  <div class="container">
+    <el-button @click="outputFile" type="primary">导出模版</el-button>
+  </div>
 </template>
 
 <script setup lang="ts">
 // import pdf from 'vue-pdf'
 // import { getDocument } from 'pdfjs-dist'
 import 'pdfjs-dist/build/pdf.worker.entry'
-import { onMounted, ref } from 'vue'
+// import { onMounted, ref } from 'vue'
+
 import { postPDF } from './service'
 // const canvasRef = ref<HTMLCanvasElement | null>(null)
-let objectUrl = ref('')
+// let objectUrl = ref('')
 
-onMounted(async () => {
-  const res = await postPDF()
-  objectUrl.value = res.msg
-  console.log(res)
-})
+// onMounted(async () => {
+//   const res = await postPDF()
+//   objectUrl.value = res.msg
+//   console.log(res)
+// })
+const outputFile = async () => {
+  const loading = ElLoading.service({
+    lock: true,
+    text: '数据加载中请稍后',
+    background: 'rgba(0, 0, 0, 0.7)'
+  })
+  await postPDF()
+    .then((res) => {
+      loading.close()
+      const downloadUrl = res.msg
+      const link = document.createElement('a')
+      link.href = downloadUrl
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      ElMessage.success('下载成功')
+      console.log(res)
+    })
+    .catch((err) => {
+      ElMessage.error(`下载失败.错误：${err}`)
+    })
+}
 // onMounted(async () => {
 //   const pdf = await getDocument(objectUrl.value).promise
 //   const page = await pdf.getPage(1)
@@ -42,5 +68,11 @@ onMounted(async () => {
   width: 100%;
   border: none;
   height: 100%;
+}
+.container {
+  display: flex;
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+  height: 100vh; /* 全屏高度 */
 }
 </style>

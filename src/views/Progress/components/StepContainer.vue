@@ -65,7 +65,8 @@ const goToDetial = (sid: string) => {
     path: `${route.path}/${sid}`,
     query: {
       topText: stateCart.top_text,
-      middleText: stateCart.middle_text
+      middleText: stateCart.middle_text,
+      bottomText: stateCart.bottom_text
     }
   })
 }

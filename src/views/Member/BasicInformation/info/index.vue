@@ -44,12 +44,7 @@ import { useMemberStore } from '@/stores/memberInfo/memberInfo'
 import { storeToRefs } from 'pinia'
 const memberStore = useMemberStore()
 const { memberInfo, image } = storeToRefs(memberStore)
-// let memberInfo = ref({})
-// onMounted(() => {
-//   getMemberInfo().then((res) => {
-//     memberInfo.value = res.msg
-//   })
-// })
+
 const isShow = ref(true)
 const isEditing = ref(false)
 const toggleEditMode = () => {

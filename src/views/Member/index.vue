@@ -1,13 +1,3 @@
-<!-- <template>
-  <div class="common-layout">
-    <el-container>
-      <el-header>
-        <Header :Menudata />
-      </el-header>
-      <el-main> <RouterView /></el-main>
-    </el-container>
-  </div>
-</template> -->
 <template>
   <div style="height: 100vh; display: flex; flex-direction: column">
     <Header :Menudata />

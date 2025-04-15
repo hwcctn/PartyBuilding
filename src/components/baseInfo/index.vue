@@ -145,13 +145,13 @@ const info = ref({
           shape="square"
           class="custom-avatar"
           fit="fill"
-          :src="avatarSrc"
+          :src="info[0].value"
         />
       </div>
       <div class="right">
         <div class="info">
           <el-descriptions class="custom-descriptions">
-            <template v-for="item in info" :key="item">
+            <template v-for="item in info.slice(1)" :key="item">
               <el-descriptions-item
                 style="width: 10px"
                 :label="`${item.label}:`"
@@ -175,8 +175,8 @@ const props = defineProps<{
   memberInfo: UserInfoItem[]
 }>()
 console.log('传过来的人员信息', props.memberInfo)
-const avatarSrc =
-  'https://img2.baidu.com/it/u=717423697,1047943915&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=1067'
+// const avatarSrc =
+//   'https://img2.baidu.com/it/u=717423697,1047943915&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=1067'
 // const info = ref({
 //   username: '龚雪竹',
 //   fields: [

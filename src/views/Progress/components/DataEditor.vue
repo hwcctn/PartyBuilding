@@ -83,15 +83,14 @@ const formData = ref({ ...defaultValues[sid] })
 // console.log('formData', formData)
 const formConfigs: any = {
   1: [
-    // {
-    //   key: '1-1',
-    //   label: '入党申请时间',                                                                                                                                ',
-    //   type: 'date',
-    //   tooltip: '要满18岁之后才能申请入党',
-    //   placeholder: '与入党申请书落款时间一致',
-    //   span: 20
-    // },
-
+    {
+      key: '1-1',
+      label: '入党申请时间',
+      type: 'date',
+      tooltip: '要满18岁之后才能申请入党',
+      placeholder: '与入党申请书落款时间一致',
+      span: 20
+    },
     {
       key: '1-2',
       label: '入党申请书接收人(单位、职务、签名)',
@@ -296,5 +295,11 @@ const handleSave = async () => {
   height: 100%;
   padding: 12px;
   overflow-y: auto;
+}
+::v-deep(.el-form-item__label) {
+  line-height: normal;
+}
+.el-row {
+  justify-content: center;
 }
 </style>

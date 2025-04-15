@@ -35,3 +35,8 @@ export function putCommitteeStepInfo(uid: string, sid: string, data: object) {
     data: data
   })
 }
+export function putNextStep(uid: string, sid: string) {
+  return MYRequest.put({
+    url: `/branch/next/${uid}/${sid}`
+  })
+}

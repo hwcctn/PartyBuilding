@@ -43,3 +43,8 @@ export function UpdateUserByID(role: string, updateInfo: any) {
     params: apiData
   })
 }
+export function getExcel(role: string) {
+  return MYRequest.get({
+    url: `/${role}/export`
+  })
+}
