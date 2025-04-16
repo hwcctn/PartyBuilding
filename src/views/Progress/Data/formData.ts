@@ -176,5 +176,366 @@ export const formConfigs: any = {
         '（从列为积极分子后每半年考察一次，考察情况落款时间刚满半年当天）',
       type: 'textarea'
     }
+  ],
+
+  7: [
+    {
+      key: '7-1',
+      label: '支部确定发展对象人选时间',
+      type: 'date',
+      placeholder: '发展对象人选时间',
+      span: 20
+    },
+    {
+      key: '7-2',
+      label: '起止公示时间',
+      // type: 'datetimerange',
+
+      startplaceholder: '开始 日期',
+      endplaceholder: '结束 日期',
+      span: 20
+    }
+  ],
+  8: [
+    {
+      key: '8-1',
+      label: '党委备案时间',
+      type: 'date',
+      placeholder: '请输入党委时间',
+      span: 20
+    }
+  ],
+  9: [
+    {
+      key: '9-1',
+      label: '入党介绍人1',
+      type: 'text',
+      placeholder: '请输入入党介绍人1'
+    },
+    {
+      key: '9-2',
+      label: '单位及职务1',
+      type: 'text',
+      placeholder: '请输入单位及职务2'
+    },
+    {
+      key: '9-3',
+      label: '入党介绍人2',
+      type: 'text',
+      placeholder: '请输入入党介绍人2'
+    },
+    {
+      key: '9-4',
+      label: '单位及职务2',
+      type: 'text',
+      placeholder: '请输入单位及职务2'
+    }
+  ],
+  10: [
+    {
+      key: '10-1',
+      label: '政审是否合格',
+      type: 'select',
+      placeholder: '请选择',
+      options: [
+        { label: '是', value: '是' },
+        { label: '否', value: '否' }
+      ],
+      span: 20
+    },
+    {
+      key: '10-2',
+      label: '政审人（单位，职务，签名）',
+      type: 'text',
+      placeholder: '请输入单位及职务以及签名',
+      span: 20
+    }
+  ],
+  11: [
+    {
+      key: '11-1',
+      label: '参加发展对象集中培训起止日期',
+      // type: 'datetimerange',
+      span: 20
+    },
+    {
+      key: '11-2',
+      label: '培训成绩',
+      type: 'text',
+      placeholder: '请输入培训成绩',
+      span: 20
+    }
+  ],
+  12: [
+    {
+      key: '12-1',
+      label: '支部审查时间',
+      type: 'date',
+      placeholder: '请输入支部审查时间',
+      span: 20
+    }
+  ],
+  13: [
+    {
+      key: '13-1',
+      label: '党委预审时间',
+      type: 'date',
+      placeholder: '请输入党委预审时间',
+      span: 20
+    }
+  ],
+  14: [
+    {
+      key: '14-1',
+      label: '入党志愿书编号',
+      type: 'text',
+      placeholder: '请输入入党志愿书编号',
+      span: 20
+    }
+  ],
+  15: [
+    {
+      key: '15-1',
+      label: '会议时间',
+      type: 'date',
+      placeholder: '请输入会议时间'
+    },
+    {
+      key: '15-2',
+      label: '有表决权党员人数',
+      type: 'text',
+      placeholder: '请输入人员个数'
+    },
+    {
+      key: '15-3',
+      label: '应到人数',
+      type: 'text',
+      placeholder: '请输入应到人数'
+    },
+    {
+      key: '15-4',
+      label: '实到人数',
+      type: 'text',
+      placeholder: '请输入实到人数'
+    },
+    {
+      key: '15-5',
+      label: '赞成票数',
+      type: 'text',
+      placeholder: '请输入赞成票数',
+      span: 8
+    },
+    {
+      key: '15-6',
+      label: '反对票数',
+      type: 'text',
+      placeholder: '请输入反对票数',
+      span: 8
+    },
+    {
+      key: '15-7',
+      label: '弃权票数',
+      type: 'text',
+      placeholder: '请输入弃权票数',
+      span: 8
+    }
+  ],
+  16: [
+    {
+      key: '16-1',
+      label: '党委派人谈话时间',
+      type: 'date',
+      placeholder: '请输入谈话时间',
+      span: 20
+    },
+    {
+      key: '16-2',
+      label: '谈话人（单位，职务，签名）',
+      type: 'text',
+      placeholder: '请输入相关信息',
+      span: 20
+    }
+  ],
+  17: [
+    {
+      key: '17-1',
+      label: '党委审批时间',
+      type: 'date',
+      placeholder: '请输入审批时间'
+    },
+    {
+      key: '17-2',
+      label: '党委委员个数',
+      type: 'text',
+      placeholder: '请输入人员个数'
+    },
+    {
+      key: '17-3',
+      label: '实到人数',
+      type: 'text',
+      placeholder: '请输入人员个数'
+    },
+    {
+      key: '17-4',
+      label: '同意个数',
+      type: 'text',
+      placeholder: '请输入人员个数'
+    },
+    {
+      key: '17-5',
+      label: '预备起止时间',
+      // type: 'datetimerange',
+      span: 20
+    }
+  ],
+  18: [
+    {
+      key: '18-1',
+      label: '向上级党委组织部门备案时间',
+      type: 'date',
+      placeholder: '请输入备案时间',
+      span: 20
+    }
+  ],
+  19: [
+    {
+      key: '19-1',
+      label: '编入党支部名称',
+      type: 'text',
+      placeholder: '请输入党支部名称',
+      span: 20
+    }
+  ],
+  20: [
+    {
+      key: '20-1',
+      label: '入党宣誓时间',
+      type: 'date',
+      placeholder: '请输入宣誓时间',
+      span: 20
+    }
+  ],
+
+  //21：继续教育考察
+  21: [
+    {
+      key: '21-1',
+      label: '继续教育考察',
+      type: 'textarea',
+      placeholder: '请输入考察内容',
+      span: 20
+    }
+  ],
+  22: [
+    {
+      key: '22-1',
+      label: '申请转正时间',
+      type: 'date',
+      placeholder: '请输入申请转正时间',
+      span: 20
+    },
+    {
+      key: '22-1',
+      label: '转正公示起止时间',
+      type: 'text',
+      placeholder: '请输入转正公示起止时间',
+      span: 20
+    }
+  ],
+  23: [
+    {
+      key: '23-1',
+      label: '会议时间',
+      type: 'date',
+      placeholder: '请输入会议时间'
+    },
+    {
+      key: '23-2',
+      label: '有表决权党员人数',
+      type: 'text',
+      placeholder: '请输入人员个数'
+    },
+    {
+      key: '23-3',
+      label: '应到人数',
+      type: 'text',
+      placeholder: '请输入人员个数'
+    },
+    {
+      key: '23-4',
+      label: '实到人数',
+      type: 'text',
+      placeholder: '请输入人员个数'
+    },
+    {
+      key: '23-5',
+      label: '赞成票数',
+      type: 'text',
+      placeholder: '请输入赞成票数',
+      span: 6
+    },
+    {
+      key: '23-6',
+      label: '反对票数',
+      type: 'text',
+      placeholder: '请输入反对票数',
+      span: 6
+    },
+    {
+      key: '23-7',
+      label: '弃权票数',
+      type: 'text',
+      placeholder: '请输入弃权票数',
+      span: 6
+    },
+    {
+      key: '23-8',
+      label: '会议决议',
+      type: 'select',
+      placeholder: '请选择',
+      options: [
+        { label: '是', value: '是' },
+        { label: '否', value: '否' }
+      ],
+      span: 6
+    }
+  ],
+  24: [
+    {
+      key: '24-1',
+      label: '党委审批时间',
+      type: 'date',
+      placeholder: '请输入审批时间'
+    },
+    {
+      key: '24-2',
+      label: '党委委员人数',
+      type: 'text',
+      placeholder: '请输入人员个数'
+    },
+    {
+      key: '24-3',
+      label: '实到人数',
+      type: 'text',
+      placeholder: '请输入人员个数'
+    },
+    {
+      key: '24-4',
+      label: '同意人数',
+      type: 'text',
+      placeholder: '请输入人员个数'
+    },
+    {
+      key: '24-5',
+      label: '党龄起算时间',
+      type: 'date',
+      placeholder: '请输入党龄起算时间'
+    },
+    {
+      key: '24-6',
+      label: '档案整理人',
+      type: 'text',
+      placeholder: '请输入档案整理人姓名'
+    }
   ]
 }

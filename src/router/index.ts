@@ -25,6 +25,7 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Login',
     component: Login
   },
+  // 党员
   {
     path: '/member',
     component: Member,
@@ -87,6 +88,7 @@ const routes: Array<RouteRecordRaw> = [
       // }
     ]
   },
+  // 党委
   {
     path: '/committee',
     component: Committee,

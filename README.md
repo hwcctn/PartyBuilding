@@ -8,10 +8,7 @@
 
 ![](./github/image1.png)
 ![](./github/image2.png)
-![](./github/image3.png)
-![](./github/image4.png)
 ![](./github/image5.png)
-![](./github/image6.png)
 ![](./github/image7.png)
 ![](./github/image8.png)
 ![](./github/image9.png)
