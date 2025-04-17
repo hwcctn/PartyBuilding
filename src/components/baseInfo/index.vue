@@ -2,7 +2,19 @@
   <div class="main-container">
     <div class="title">
       <span style="margin: 0; padding-bottom: 10px">基本信息</span>
-      <el-button @click="outputFile">导出模版</el-button>
+      <!-- <el-button @click="outputFile">导出模版</el-button> -->
+      <el-button @click="exportDialogVisible = true">导出模版</el-button>
+      <el-dialog v-model="exportDialogVisible" title="选择导出内容" width="30%">
+        <el-checkbox-group v-model="exportOptions">
+          <el-checkbox label="多选框1" />
+          <el-checkbox label="多选框2" />
+          <el-checkbox label="多选框3" />
+        </el-checkbox-group>
+        <template #footer>
+          <el-button @click="exportDialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="confirmExport">确定导出</el-button>
+        </template>
+      </el-dialog>
     </div>
     <div class="info-container">
       <div class="avater">
@@ -46,7 +58,45 @@ import { useRoute } from 'vue-router'
 import { postPDF } from './service'
 const route = useRoute()
 const { role, uid } = route.params
+const exportDialogVisible = ref(false)
+const exportOptions = ref<string[]>([])
+
+const confirmExport = async () => {
+  if (exportOptions.value.length === 0) {
+    ElMessage.warning('请至少选择一项导出内容')
+    return
+  }
+
+  exportDialogVisible.value = false
+
+  const loading = ElLoading.service({
+    lock: true,
+    text: '数据加载中请稍后',
+    background: 'rgba(0, 0, 0, 0.7)'
+  })
+  await postPDF(role as string, uid as string)
+    .then((res) => {
+      loading.close()
+      const downloadUrl = res.msg
+      if (downloadUrl) {
+        const link = document.createElement('a')
+        link.href = downloadUrl
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        ElMessage.success('下载成功')
+        console.log(res)
+      } else {
+        ElMessage.warning(`下载异常`)
+      }
+    })
+    .catch((err) => {
+      ElMessage.error(`下载失败.错误：${err}`)
+    })
+}
+
 const outputFile = async () => {
+  //显示一个全屏加载动画
   const loading = ElLoading.service({
     lock: true,
     text: '数据加载中请稍后',
