@@ -221,6 +221,10 @@ let size = ref(15)
 
 let total = ref()
 const getTableData = () => {
+  if (!Array.isArray(Modeldata.value)) {
+    console.warn('Modeldata 不是数组', Modeldata.value)
+    Modeldata.value = [] // 避免 slice 报错
+  }
   tableData.value = Modeldata.value.slice(
     (page.value - 1) * size.value,
     page.value * size.value
@@ -250,7 +254,8 @@ async function getMemberUsersAction() {
         searchParams = { identity_id: input2.value }
     }
     const res = await getMemberUsers(searchParams)
-    Modeldata.value = res.msg
+    // Modeldata.value = res.msg
+    Modeldata.value = Array.isArray(res.msg) ? res.msg : []
     console.log('结果', res)
     getTableData()
   } catch (err) {
@@ -266,8 +271,14 @@ const resetUser = () => {
 
 onMounted(async () => {
   const res = await getMemberUsers()
+  if (res.code !== 200) {
+  ElMessage.error(res.msg || '获取党员数据失败')
+  Modeldata.value = []
+  return 
+}
   console.log('党员信息数据', res)
-  Modeldata.value = res.msg
+  // Modeldata.value = res.msg
+  Modeldata.value = Array.isArray(res.msg) ? res.msg : []
   getTableData()
 })
 </script>

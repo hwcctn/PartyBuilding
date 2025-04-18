@@ -5,11 +5,11 @@
     <!-- <el-button @click="outputFile" type="primary">导出模版</el-button> -->
     <el-button @click="exportDialogVisible = true">导出模版</el-button>
       <el-dialog v-model="exportDialogVisible" title="选择导出内容" width="30%">
-        <el-checkbox-group v-model="exportOptions">
-          <el-checkbox label="多选框1" />
-          <el-checkbox label="多选框2" />
-          <el-checkbox label="多选框3" />
-        </el-checkbox-group>
+        <el-radio-group v-model="exportOption">
+        <el-radio label="积极分子" />
+        <el-radio label="发展对象" />
+        <el-radio label="预备党员" />
+      </el-radio-group>
         <template #footer>
           <el-button @click="exportDialogVisible = false">取消</el-button>
           <el-button type="primary" @click="confirmExport">确定导出</el-button>
@@ -25,6 +25,9 @@ import 'pdfjs-dist/build/pdf.worker.entry'
 // import { onMounted, ref } from 'vue'
 import { postPDF } from './service'
 import {ref} from 'vue'
+import { useRoute } from 'vue-router'
+const route = useRoute()
+
 // const canvasRef = ref<HTMLCanvasElement | null>(null)
 // let objectUrl = ref('')
 
@@ -33,15 +36,20 @@ import {ref} from 'vue'
 //   objectUrl.value = res.msg
 //   console.log(res)
 // })
-const exportDialogVisible = ref(false)
-const exportOptions = ref<string[]>([])
-
+const exportDialogVisible = ref(false)//显示
+const exportOption = ref('')//单选框绑定，值为0，1，2
+// 单选项与数值映射
+const optionMap: Record<string, number> = {
+  积极分子: 0,
+  发展对象: 1,
+  预备党员: 2
+}
 const confirmExport = async () => {
-  if (exportOptions.value.length === 0) {
+  if (exportOption.value.length === 0) {
     ElMessage.warning('请至少选择一项导出内容')
     return
   }
-
+  const num = optionMap[exportOption.value]
   exportDialogVisible.value = false
 
   const loading = ElLoading.service({
@@ -49,10 +57,11 @@ const confirmExport = async () => {
     text: '数据加载中请稍后',
     background: 'rgba(0, 0, 0, 0.7)'
   })
-  await postPDF(role as string, uid as string)
+  await postPDF(num)
     .then((res) => {
+      console.log('返回内容:', res)
       loading.close()
-      const downloadUrl = res.msg
+      const downloadUrl = res?.url
       if (downloadUrl) {
         const link = document.createElement('a')
         link.href = downloadUrl
@@ -70,28 +79,28 @@ const confirmExport = async () => {
     })
 }
 
-const outputFile = async () => {
-  const loading = ElLoading.service({
-    lock: true,
-    text: '数据加载中请稍后',
-    background: 'rgba(0, 0, 0, 0.7)'
-  })
-  await postPDF()
-    .then((res) => {
-      loading.close()
-      const downloadUrl = res.msg
-      const link = document.createElement('a')
-      link.href = downloadUrl
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      ElMessage.success('下载成功')
-      console.log(res)
-    })
-    .catch((err) => {
-      ElMessage.error(`下载失败.错误：${err}`)
-    })
-}
+// const outputFile = async () => {
+//   const loading = ElLoading.service({
+//     lock: true,
+//     text: '数据加载中请稍后',
+//     background: 'rgba(0, 0, 0, 0.7)'
+//   })
+//   await postPDF()
+//     .then((res) => {
+//       loading.close()
+//       const downloadUrl = res.msg
+//       const link = document.createElement('a')
+//       link.href = downloadUrl
+//       document.body.appendChild(link)
+//       link.click()
+//       document.body.removeChild(link)
+//       ElMessage.success('下载成功')
+//       console.log(res)
+//     })
+//     .catch((err) => {
+//       ElMessage.error(`下载失败.错误：${err}`)
+//     })
+// }
 // onMounted(async () => {
 //   const pdf = await getDocument(objectUrl.value).promise
 //   const page = await pdf.getPage(1)
