@@ -61,7 +61,7 @@ const toggleEditMode = () => {
 import { ElMessage } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import type { UploadProps } from 'element-plus'
-import type { UploadRequestOptions } from 'element-plus'
+import type { UploadRequestOptions, UploadRequestHandler } from 'element-plus'
 import { postUploadAvatar } from '../service/index'
 
 const imageUrl = ref(image)
@@ -72,12 +72,12 @@ const imageUrl = ref(image)
 // ) => {
 //   imageUrl.value = URL.createObjectURL(uploadFile.raw!)
 // }
-const memberUpload = (option: UploadRequestOptions) => {
+const memberUpload: UploadRequestHandler = (option: UploadRequestOptions) => {
   const formData = new FormData()
   formData.append('avatar', option.file)
-  postUploadAvatar(formData).then((res) => {
+  return postUploadAvatar(formData).then((res) => {
     imageUrl.value = res.url
-    console.log(res)
+    // console.log(res)
   })
 }
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {

@@ -6,10 +6,10 @@
       <el-button @click="exportDialogVisible = true">导出模版</el-button>
       <el-dialog v-model="exportDialogVisible" title="选择导出内容" width="30%">
         <el-radio-group v-model="exportOption">
-        <el-radio label="积极分子" />
-        <el-radio label="发展对象" />
-        <el-radio label="预备党员" />
-      </el-radio-group>
+          <el-radio label="积极分子" />
+          <el-radio label="发展对象" />
+          <el-radio label="预备党员" />
+        </el-radio-group>
         <template #footer>
           <el-button @click="exportDialogVisible = false">取消</el-button>
           <el-button type="primary" @click="confirmExport">确定导出</el-button>
@@ -58,8 +58,8 @@ import { useRoute } from 'vue-router'
 import { postPDF } from './service'
 const route = useRoute()
 const { role, uid } = route.params
-const exportDialogVisible = ref(false)//显示
-const exportOption = ref('')//单选框绑定，值为0，1，2
+const exportDialogVisible = ref(false) //显示
+const exportOption = ref('') //单选框绑定，值为0，1，2
 // 单选项与数值映射
 const optionMap: Record<string, number> = {
   积极分子: 0,

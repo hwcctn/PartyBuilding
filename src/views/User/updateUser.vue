@@ -87,7 +87,7 @@ watch(
 
 const handleSubmit = async () => {
   try {
-    const res = await UpdateUserByID(role, formData.value)
+    const res = await UpdateUserByID(role as string, formData.value)
     console.log('修改结果是', res)
     ElMessage.success('修改成功')
     emit('success')

@@ -77,10 +77,10 @@ import {
 // const login = async () => {
 //   router.push('/home')
 // }
-import { useUserStore } from '@/stores/index'
-import type { UserRole } from '@/stores/index'
-const userStore = useUserStore()
-const { changeRole } = userStore
+// import { useUserStore } from '@/stores/index'
+// import type { UserRole } from '@/stores/index'
+// const userStore = useUserStore()
+// const { changeRole } = userStore
 let User = reactive({ account: 'branch', password: '123456', role: 'branch' })
 
 const login = async () => {
@@ -105,7 +105,8 @@ const login = async () => {
   if (res?.msg) {
     localStorage.setItem('token', res.msg)
     ElMessage.success('登录成功')
-    changeRole(User.role as UserRole)
+    // changeRole(User.role as UserRole)
+    localStorage.setItem('role', User.role)
     router.push(`/${User.role}`)
   } else {
     console.error('登录失败', res)

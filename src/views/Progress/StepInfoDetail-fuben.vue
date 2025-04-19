@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="title">
     <h3>{{ topText }}:{{ middleText }}</h3>
   </div>
@@ -76,4 +76,4 @@ const demoData = [
   width: 100px;
   margin-top: 50px;
 }
-</style>
+</style> -->

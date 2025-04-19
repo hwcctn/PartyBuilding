@@ -21,6 +21,6 @@ const Menudata = ref({
 
 <style lang="scss" scoped>
 .main {
-  with: 100%;
+  width: 100%;
 }
 </style>

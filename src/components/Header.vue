@@ -56,7 +56,8 @@ import { useRoute, useRouter } from 'vue-router'
 
 // // 设置路由高亮
 const route = useRoute()
-const activeIndex = ref(route.meta.activeMenu || route.path)
+const activeIndex = ref<string>(route.path)
+console.log(route)
 // 退出登录
 const router = useRouter()
 const goToLogin = () => {
@@ -64,7 +65,7 @@ const goToLogin = () => {
 }
 // // 路由监听
 watch(route, (newRoute) => {
-  activeIndex.value = newRoute.meta.activeMenu || newRoute.path
+  activeIndex.value = newRoute.path
 })
 interface MenuItem {
   index: string

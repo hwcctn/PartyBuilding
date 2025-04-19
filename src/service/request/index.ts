@@ -1,6 +1,7 @@
 import axios from 'axios'
 import type { AxiosInstance, InternalAxiosRequestConfig } from 'axios'
 import type { MYRequestConfig } from './type'
+import router from '@/router'
 const DEAFULT_ADDTOKEN = true
 class Request {
   instance: AxiosInstance
@@ -25,10 +26,16 @@ class Request {
     )
     this.instance.interceptors.response.use(
       (res) => {
+        // console.log('res', res.data)
+        if (res.data.code === 401) {
+          router.push('/403')
+          ElMessage.error(res.data.msg)
+          return
+        }
         return res.data
       },
       (err) => {
-        // console.log(err)
+        // console.log('err', err)
         return err
       }
     )

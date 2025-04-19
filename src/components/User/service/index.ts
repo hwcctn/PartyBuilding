@@ -13,7 +13,7 @@ export function getUsers(role: string, params?: UsersParams) {
 
 export function addUsers(role: string, formData: FormData) {
   return MYRequest.post({
-    url: '/${role}/addUsers',
+    url: `/${role}/addUsers`,
     data: formData
   })
 }

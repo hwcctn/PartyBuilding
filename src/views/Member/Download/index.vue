@@ -4,17 +4,17 @@
   <div class="container">
     <!-- <el-button @click="outputFile" type="primary">导出模版</el-button> -->
     <el-button @click="exportDialogVisible = true">导出模版</el-button>
-      <el-dialog v-model="exportDialogVisible" title="选择导出内容" width="30%">
-        <el-radio-group v-model="exportOption">
+    <el-dialog v-model="exportDialogVisible" title="选择导出内容" width="30%">
+      <el-radio-group v-model="exportOption">
         <el-radio label="积极分子" />
         <el-radio label="发展对象" />
         <el-radio label="预备党员" />
       </el-radio-group>
-        <template #footer>
-          <el-button @click="exportDialogVisible = false">取消</el-button>
-          <el-button type="primary" @click="confirmExport">确定导出</el-button>
-        </template>
-      </el-dialog>
+      <template #footer>
+        <el-button @click="exportDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="confirmExport">确定导出</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -24,20 +24,9 @@
 import 'pdfjs-dist/build/pdf.worker.entry'
 // import { onMounted, ref } from 'vue'
 import { postPDF } from './service'
-import {ref} from 'vue'
-import { useRoute } from 'vue-router'
-const route = useRoute()
-
-// const canvasRef = ref<HTMLCanvasElement | null>(null)
-// let objectUrl = ref('')
-
-// onMounted(async () => {
-//   const res = await postPDF()
-//   objectUrl.value = res.msg
-//   console.log(res)
-// })
-const exportDialogVisible = ref(false)//显示
-const exportOption = ref('')//单选框绑定，值为0，1，2
+import { ref } from 'vue'
+const exportDialogVisible = ref(false) //显示
+const exportOption = ref('') //单选框绑定，值为0，1，2
 // 单选项与数值映射
 const optionMap: Record<string, number> = {
   积极分子: 0,

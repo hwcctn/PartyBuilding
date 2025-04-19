@@ -51,8 +51,9 @@
 import type { User } from './type'
 import { ref, watch } from 'vue'
 import { UpdateUserByID } from './service'
-// import { ElMessage } from 'element-plus'
-// import { updateUser } from './service'
+import { useRoute } from 'vue-router'
+const route = useRoute()
+const role = route.params.role
 
 const props = defineProps<{
   visible: boolean
@@ -84,7 +85,7 @@ watch(
 
 const handleSubmit = async () => {
   try {
-    const res = await UpdateUserByID(formData.value)
+    const res = await UpdateUserByID(role as string, formData.value)
     console.log('修改结果是', res)
     ElMessage.success('修改成功')
     emit('success')

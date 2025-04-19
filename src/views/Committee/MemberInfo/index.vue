@@ -167,14 +167,15 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { usePnumberStore, useUserStore } from '@/stores/index.ts'
+import { usePnumberStore } from '@/stores/index.ts'
 import { getMemberUsers } from '../service'
 import { ElMessage } from 'element-plus'
 import { Search } from '@element-plus/icons-vue'
 const pnumberStore = usePnumberStore()
 const { GroupTree } = pnumberStore
 let Modeldata = ref([])
-const { role } = useUserStore()
+// const { role } = useUserStore()
+const role = localStorage.getItem('role')
 const router = useRouter()
 const filterGroup = (value: any, row: any) => {
   return String(row.organization) === value
@@ -272,10 +273,10 @@ const resetUser = () => {
 onMounted(async () => {
   const res = await getMemberUsers()
   if (res.code !== 200) {
-  ElMessage.error(res.msg || '获取党员数据失败')
-  Modeldata.value = []
-  return 
-}
+    ElMessage.error(res.msg || '获取党员数据失败')
+    Modeldata.value = []
+    return
+  }
   console.log('党员信息数据', res)
   // Modeldata.value = res.msg
   Modeldata.value = Array.isArray(res.msg) ? res.msg : []

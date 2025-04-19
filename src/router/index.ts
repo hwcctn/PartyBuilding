@@ -13,6 +13,14 @@ import BasicInformation from '@/views/Member/BasicInformation/index.vue'
 import Download from '@/views/Member/Download/index.vue'
 import Personnel from '@/views/User/index.vue'
 // import { useUserStore } from '@/stores'
+// 声明 RouteMeta类型
+import 'vue-router'
+declare module 'vue-router' {
+  interface RouteMeta {
+    requiresAuth?: boolean
+    allowedRoles?: Array<'member' | 'branch' | 'committee'>
+  }
+}
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -149,14 +157,16 @@ const router = createRouter({
   history: createWebHistory(),
   routes
 })
-// router.beforeEach((to, from, next) => {
-//   const userStore = useUserStore()
-//   const currentRole = userStore.role as 'member' | 'branch' | 'committee'
-//   if (to.meta.requiresAuth && !userStore.isAuthenticated) {
-//     return next('/login')
-//   }
-//   if (to.meta.allowedRoles && !to.meta.allowedRoles.includes(currentRole)) {
-//     return next('/forbidden') // 返回错误页面
-//   }
-// })
+router.beforeEach((to, _, next) => {
+  // const userStore = useUserStore()
+  // const currentRole = userStore.role as 'member' | 'branch' | 'committee'
+  const currentRole = localStorage.getItem('role') as
+    | 'member'
+    | 'branch'
+    | 'committee'
+  if (to.meta.allowedRoles && !to.meta.allowedRoles.includes(currentRole)) {
+    return next('/403')
+  }
+  next()
+})
 export default router

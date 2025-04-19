@@ -166,14 +166,15 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { usePnumberStore, useUserStore } from '@/stores/index.ts'
+import { usePnumberStore } from '@/stores/index.ts'
 import { getMemberUsers } from './service'
 import { ElMessage } from 'element-plus'
 import { Search } from '@element-plus/icons-vue'
 const pnumberStore = usePnumberStore()
 const { GroupTree } = pnumberStore
 let Modeldata = ref([])
-const { role } = useUserStore()
+// const { role } = useUserStore()
+const role = localStorage.getItem('role')
 const router = useRouter()
 const filterGroup = (value: any, row: any) => {
   return String(row.organization) === value

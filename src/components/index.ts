@@ -1,13 +1,12 @@
-import type { App, DefineComponent } from 'vue'
+import type { App, Component } from 'vue'
 import SvgIcon from './SvgIcon/index.vue'
 import BaseInfo from './baseInfo/index.vue'
 import User from './User/index.vue'
 
 // 定义组件类型
-type ComponentType = DefineComponent<{}, {}, any>
 
 // 定义全局组件对象
-const allGlobalComponent: Record<string, ComponentType> = {
+const allGlobalComponent: Record<string, Component> = {
   SvgIcon,
   BaseInfo,
   User
