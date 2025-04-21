@@ -5,7 +5,7 @@
         <div class="left">
           <svg-icon @click="goBack" name="return_back"></svg-icon>
         </div>
-        <div class="right"><strong>查看龚雪竹信息</strong></div>
+        <div class="right"><strong>查看信息</strong></div>
       </el-header>
       <el-container>
         <!-- 左侧的 el-tabs -->

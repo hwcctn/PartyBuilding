@@ -12,10 +12,10 @@ import { ref } from 'vue'
 // const route = useRoute()
 
 const Menudata = ref({
-  title: '个人信息',
+  // title: '个人信息',
   menu: [
-    { index: '/member/basicInfo', label: '基本信息' },
-    { index: '/member/download', label: '模版下载' }
+    { index: '/member/basicInfo', label: '首页' },
+    // { index: '/member/download', label: '模版下载' }
   ]
 })
 </script>

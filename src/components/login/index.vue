@@ -105,8 +105,9 @@ const login = async () => {
   if (res?.msg) {
     localStorage.setItem('token', res.msg)
     ElMessage.success('登录成功')
-    // changeRole(User.role as UserRole)
-    localStorage.setItem('role', User.role)
+    localStorage.setItem('role', User.role);
+    localStorage.setItem('account',User.account)
+    localStorage.setItem('password',User.password)
     router.push(`/${User.role}`)
   } else {
     console.error('登录失败', res)

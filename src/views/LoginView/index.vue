@@ -26,6 +26,7 @@
   background-image: url('@/assets/images/login-bgc.gif');
   background-repeat: no-repeat;
   background-size: cover;
+  overflow: hidden; /* 防止滚动 */
 }
 .text {
   position: absolute;
@@ -47,7 +48,7 @@
 
 .right {
   width: 50%;
-  height: 100%;
+  height: 1000px;
   position: relative;
   float: left;
 }

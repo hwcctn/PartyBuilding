@@ -58,10 +58,11 @@ interface Props {
 }
 const prop = defineProps<Props>()
 const { stateCart } = prop
-// console.log(stateCart)
+console.log(stateCart)
 const goToDetial = (sid: string) => {
   console.log('123')
   router.push({
+    //这里是重点
     path: `${route.path}/${sid}`,
     query: {
       topText: stateCart.top_text,

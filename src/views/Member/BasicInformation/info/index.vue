@@ -90,6 +90,9 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
   }
   return true
 }
+
+
+
 </script>
 
 <style scoped lang="scss">

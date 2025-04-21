@@ -6,7 +6,7 @@
 <style lang="scss">
 body {
   margin: 0;
-  min-width: 1600px;
+  // min-width: 1600px;
   display: block;
   background-color: #f7f7f7;
 }

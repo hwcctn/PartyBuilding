@@ -15,6 +15,7 @@ import Personnel from '@/views/User/index.vue'
 // import { useUserStore } from '@/stores'
 // 声明 RouteMeta类型
 import 'vue-router'
+import path from 'path'
 declare module 'vue-router' {
   interface RouteMeta {
     requiresAuth?: boolean
@@ -37,12 +38,30 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/member',
     component: Member,
-    redirect: '/member/basicInfo',
+    redirect: '/member/basicInfo/imformation',
     meta: { requiresAuth: true, allowedRoles: ['member'] },
     children: [
       {
         path: 'basicInfo',
-        component: BasicInformation
+        component: BasicInformation,
+        redirect: '/member/basicInfo/imformation',
+        children:[
+          {
+            path: 'imformation',
+            component: () => import('@/views/Member/BasicInformation/imformation/index.vue'),
+            meta: { title: '基本信息' }
+          },
+          {
+            path: 'passwordsetting',
+            component: () => import('@/views/Member/BasicInformation/passwordsetting/index.vue'),
+            meta: { title: '密码设置' }
+          },
+          {
+            path: 'download',
+            component: () => import('@/views/Member/BasicInformation/download/index.vue'),
+            meta: { title: '模板下载' }
+          },
+        ]
       },
       {
         path: 'download',
@@ -61,14 +80,55 @@ const routes: Array<RouteRecordRaw> = [
       }
     ]
   },
+  //支部
   {
     path: '/branch',
     component: Branch,
-    meta: { requiresAuth: true, allowedRoles: ['branch'] },
+    meta: { requiresAuth: true, allowedRoles: ['branch','member'] },
+    redirect: '/branch/member-info/manageperson',
     children: [
       {
-        path: '/branch/member-info',
-        component: BMemberIndfo
+        path: 'member-info',
+        component: BMemberIndfo,
+        redirect: '/branch/member-info/manageperson',
+        children:[
+          {
+            //相对路径不加/
+            path: 'ManagePerson',
+            component: () => import('@/views/Branch/MemberInfo/manageperson/index.vue'),
+            meta: {
+                title: '管理人员'
+            }
+          },
+          {
+            path: 'PasswordSetting',
+            component: () => import('@/views/Branch/MemberInfo/account/passwordsetting/index.vue'),
+            meta: {
+                title: '密码设置'
+            }
+          },
+          {
+            path: 'Information',
+            component: () => import('@/views/Branch/MemberInfo/account/information/index.vue'),
+            meta: {
+                title: '密码设置'
+            }
+          },
+          {
+            path: 'organization',
+            component: () => import('@/views/Branch/MemberInfo/organization/index.vue'),
+            meta: {
+                title: '组织机构'
+            }
+          },
+          {
+            path: 'data_centre',
+            component: () => import('@/views/Branch/MemberInfo/data_centre/index.vue'),
+            meta: {
+                title: '数据中心'
+            }
+          },
+        ],
       },
       // {
       //   path: '/:role(branch|committee)/personnel',

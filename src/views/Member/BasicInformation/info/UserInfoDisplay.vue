@@ -43,11 +43,25 @@
 </template>
 
 <script setup>
+import { watch } from 'vue'
 import { defineProps } from 'vue'
+import {useInformationStore} from '@/stores/Member/information'
+const memberStore = useInformationStore()
 
-defineProps({
+const props = defineProps({
   memberInfo: Object
 })
+// 监听 props.memberInfo.name，并存入 pinia
+watch(
+  () => props.memberInfo?.name,
+  (newName) => {
+    if (newName) {
+      memberStore.setMemberInfo(newName)
+      console.log('存入 pinia 的 name:', newName)
+    }
+  },
+  { immediate: true }
+)
 // import { useMemberStore } from '@/stores/memberInfo'
 // import { storeToRefs } from 'pinia'
 // const memberStore = useMemberStore()

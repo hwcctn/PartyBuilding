@@ -5,11 +5,11 @@
     <!-- <el-button @click="outputFile" type="primary">导出模版</el-button> -->
     <el-button @click="exportDialogVisible = true">导出模版</el-button>
     <el-dialog v-model="exportDialogVisible" title="选择导出内容" width="30%">
-      <el-radio-group v-model="exportOption">
-        <el-radio label="积极分子" />
-        <el-radio label="发展对象" />
-        <el-radio label="预备党员" />
-      </el-radio-group>
+      <el-checkbox-group v-model="exportOptions">
+        <el-checkbox label="积极分子" />
+        <el-checkbox label="发展对象" />
+        <el-checkbox label="预备党员" />
+      </el-checkbox-group>
       <template #footer>
         <el-button @click="exportDialogVisible = false">取消</el-button>
         <el-button type="primary" @click="confirmExport">确定导出</el-button>
@@ -26,7 +26,7 @@ import 'pdfjs-dist/build/pdf.worker.entry'
 import { postPDF } from './service'
 import { ref } from 'vue'
 const exportDialogVisible = ref(false) //显示
-const exportOption = ref('') //单选框绑定，值为0，1，2
+const exportOptions = ref([]) //多选框绑定，值为0，1，2
 // 单选项与数值映射
 const optionMap: Record<string, number> = {
   积极分子: 0,
@@ -34,11 +34,11 @@ const optionMap: Record<string, number> = {
   预备党员: 2
 }
 const confirmExport = async () => {
-  if (exportOption.value.length === 0) {
+  if (exportOptions.value.length === 0) {
     ElMessage.warning('请至少选择一项导出内容')
     return
   }
-  const num = optionMap[exportOption.value]
+  const num = optionMap[exportOptions.value]
   exportDialogVisible.value = false
 
   const loading = ElLoading.service({
