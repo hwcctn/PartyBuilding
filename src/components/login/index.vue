@@ -86,10 +86,11 @@ let User = reactive({ account: 'branch', password: '123456', role: 'branch' })
 const login = async () => {
   let res
   const payload = {
+    role: User.role,
     account: User.account,
     password: User.password
   }
-
+  console.log(User.role)
   switch (User.role) {
     case 'member':
       res = await postMemberLogin(payload)

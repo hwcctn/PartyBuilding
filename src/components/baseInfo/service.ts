@@ -4,8 +4,9 @@ import MYRequest from '@/service'
 //     url: `/${role}/wordFill/${uid}`
 //   })
 // }
-export function postPDF(role: string, uid: string, num: number) {
+export function postPDF(uid: string, ids: number[]) {
   return MYRequest.get({
-    url: `/${role}/wordFill/${uid}/${num}`
+    url: `/branch/wordFill/${uid}`,
+    params: { ids }  // GET 请求用 params 传递
   })
 }

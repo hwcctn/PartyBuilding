@@ -1,4 +1,4 @@
-<template>
+<template lang="">
   <el-card v-show="isShow">
     <div class="demo-fit">
       <div class="block">
@@ -32,6 +32,18 @@
         {{ isEditing ? '保存' : '编辑' }}
       </el-button>
     </div>
+    <el-button @click="exportDialogVisible = true">模板下载</el-button>
+      <el-dialog v-model="exportDialogVisible" title="选择导出内容" width="30%">
+        <el-radio-group v-model="exportOptions">
+          <el-radio label="积极分子" />
+          <el-radio label="发展对象" />
+          <el-radio label="预备党员" />
+        </el-radio-group>
+        <template #footer>
+          <el-button @click="exportDialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="confirmExport">确定导出</el-button>
+        </template>
+      </el-dialog>
   </el-card>
 </template>
 
@@ -44,9 +56,59 @@ import { useMemberStore } from '@/stores/memberInfo/memberInfo'
 import { storeToRefs } from 'pinia'
 const memberStore = useMemberStore()
 const { memberInfo, image } = storeToRefs(memberStore)
+//避免报错
+console.log(UserInfoDisplay) // 仅用于消除报错，不推荐生产环境使用
+console.log(UserInfoEdit) // 仅用于消除报错，不推荐生产环境使用
+//模板下载
+import { postPDF } from './service'
+const exportDialogVisible = ref(false) //显示
+const exportOptions = ref('') //单选框绑定，值为0，1，2
+// 单选项与数值映射
+const optionMap: Record<string, number> = {
+  积极分子: 0,
+  发展对象: 1,
+  预备党员: 2
+}
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const confirmExport = async () => {
+  if (exportOptions.value.length === 0) {
+    ElMessage.warning('请至少选择一项导出内容')
+    return
+  }
+  const num = optionMap[exportOptions.value]
+  exportDialogVisible.value = false
 
+  const loading = ElLoading.service({
+    lock: true,
+    text: '数据加载中请稍后',
+    background: 'rgba(0, 0, 0, 0.7)'
+  })
+  await postPDF(num)
+    .then((res) => {
+      console.log('返回内容:', res)
+      loading.close()
+      const downloadUrl = res?.url
+      if (downloadUrl) {
+        const link = document.createElement('a')
+        link.href = downloadUrl
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        ElMessage.success('下载成功')
+        console.log(res)
+      } else {
+        ElMessage.warning(`下载异常`)
+      }
+    })
+    .catch((err) => {
+      ElMessage.error(`下载失败.错误：${err}`)
+    })
+}
+console.log(confirmExport)
 const isShow = ref(true)
+console.log(isShow)// 仅用于消除报错，不推荐生产环境使用
 const isEditing = ref(false)
+
 const toggleEditMode = () => {
   if (isEditing.value) {
     // info.value = { ...editableInfo.value }
@@ -57,9 +119,10 @@ const toggleEditMode = () => {
   }
   isEditing.value = !isEditing.value
 }
+console.log(toggleEditMode)
 // 头像上传
 import { ElMessage } from 'element-plus'
-import { Plus } from '@element-plus/icons-vue'
+// import { Plus } from '@element-plus/icons-vue'
 import type { UploadProps } from 'element-plus'
 import type { UploadRequestOptions, UploadRequestHandler } from 'element-plus'
 import { postUploadAvatar } from '../service/index'
@@ -80,6 +143,7 @@ const memberUpload: UploadRequestHandler = (option: UploadRequestOptions) => {
     // console.log(res)
   })
 }
+console.log(memberUpload)
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
   if (rawFile.type !== 'image/jpeg' && rawFile.type !== 'image/png') {
     ElMessage.error('图片必须是 JPG 或 PNG 格式!')
@@ -90,7 +154,7 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
   }
   return true
 }
-
+console.log(beforeAvatarUpload)
 
 
 </script>

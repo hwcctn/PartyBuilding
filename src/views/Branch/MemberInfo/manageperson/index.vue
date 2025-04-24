@@ -49,14 +49,14 @@
               sortable
               width="250"
               show-overflow-tooltip
-              :formatter="formatter"
+              
               :filters="[
                 { text: '本科生1', value: '0' },
                 { text: '本科生2', value: '1' },
                 { text: '教工', value: '2' },
                 { text: '研究生', value: '3' }
               ]"
-              :filter-method="filterGroup"
+              
             />
             <el-table-column
               prop="sex"
@@ -129,24 +129,24 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useRoute } from 'vue-router'
-import { usePnumberStore, useUserStore } from '@/stores/index.ts'
+// import { useRoute } from 'vue-router'
+// import {  useUserStore } from '@/stores/index.ts'
 import { getMemberUsers } from '../../service/index'
 import { ElMessage } from 'element-plus'
-import { Search } from '@element-plus/icons-vue'
-const pnumberStore = usePnumberStore()
-const { menudata } = pnumberStore
+// import { Search } from '@element-plus/icons-vue'
+// const pnumberStore = usePnumberStore()
+// const { menudata } = pnumberStore
 let Modeldata = ref([])
-const { role } = useUserStore()
+// const { role } = useUserStore()
 const router = useRouter()
-const route = useRoute()
-function handleSelect(index) {
-  router.push(index)
-}
+// const route = useRoute()
+// function handleSelect(index) {
+//   router.push(index)
+// }
 
-const filterGroup = (value: any, row: any) => {
-  return String(row.organization) === value
-}
+// const filterGroup = (value: any, row: any) => {
+//   return String(row.organization) === value
+// }
 // const tableRowClassName = ({ row }: any) => {
 //   switch (row.organization) {
 //     case '人工智能学院党委教工党组织':
@@ -161,23 +161,24 @@ const filterGroup = (value: any, row: any) => {
 //       return ''
 //   }
 // }
-const formatter = (_row: any, column: any, cellValue: number) => {
-  if (column.property === 'organization') {
-    const map: Record<number, string> = {
-      0: '本科生1',
-      1: '本科生2',
-      2: '教工',
-      3: '研究生'
-    }
-    return map[cellValue] ?? cellValue
-  }
-  return String(cellValue)
-}
+// const formatter = (_row: any, column: any, cellValue: number) => {
+//   if (column.property === 'organization') {
+//     const map: Record<number, string> = {
+//       0: '本科生1',
+//       1: '本科生2',
+//       2: '教工',
+//       3: '研究生'
+//     }
+//     return map[cellValue] ?? cellValue
+//   }
+//   return String(cellValue)
+// }
 
-const input1 = ref('')
+// const input1 = ref('')
 const input2 = ref('')
 const select = ref('1')
 // 表格设置
+// @ts-ignore
 const handleClick = (row: any) => {
   console.log(row.id)
   router.push({ path: `/branch/progress/${row.id}` })
@@ -198,11 +199,13 @@ const getTableData = () => {
   total.value = Modeldata.value.length
 }
 // page改变时的回调函数
+// @ts-ignore
 const currentChange = (val: any) => {
   console.log('翻页，当前为第几页', val)
   page.value = val
   getTableData()
 }
+// @ts-ignore
 const sizeChange = (val: any) => {
   console.log('改变每页多少条，当前一页多少条数据', val)
   size.value = val
@@ -226,6 +229,7 @@ async function getMemberUsersAction() {
   }
 }
 //重置
+// @ts-ignore
 const resetUser = () => {
   input2.value = ''
   select.value = '1'

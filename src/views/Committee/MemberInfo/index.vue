@@ -1,7 +1,7 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-aside style="width: 320px; height: 100%; overflow: hidden">
+      <!-- <el-aside style="width: 320px; height: 100%; overflow: hidden">
         <el-card>
           <template #header>
             <div class="card-header">
@@ -32,7 +32,7 @@
             </template>
           </div>
         </el-card>
-      </el-aside>
+      </el-aside> -->
       <el-main>
         <!-- 搜索框 -->
         <div class="top">
@@ -85,10 +85,10 @@
               show-overflow-tooltip
               :formatter="formatter"
               :filters="[
-                { text: '本科生1', value: '0' },
-                { text: '本科生2', value: '1' },
-                { text: '教工', value: '2' },
-                { text: '研究生', value: '3' }
+                { text: '人工智能学院本科生第一党支部', value: '0' },
+                { text: '人工智能学院本科生第二党支部', value: '1' },
+                { text: '人工智能学院教工党支部', value: '2' },
+                { text: '人工智能学院研究生党支部', value: '3' }
               ]"
               :filter-method="filterGroup"
             />
@@ -167,12 +167,12 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { usePnumberStore } from '@/stores/index.ts'
+// import { usePnumberStore } from '@/stores/index.ts'
 import { getMemberUsers } from '../service'
 import { ElMessage } from 'element-plus'
 import { Search } from '@element-plus/icons-vue'
-const pnumberStore = usePnumberStore()
-const { GroupTree } = pnumberStore
+// const pnumberStore = usePnumberStore()
+// const { GroupTree } = pnumberStore
 let Modeldata = ref([])
 // const { role } = useUserStore()
 const role = localStorage.getItem('role')
@@ -182,13 +182,13 @@ const filterGroup = (value: any, row: any) => {
 }
 const tableRowClassName = ({ row }: any) => {
   switch (row.organization) {
-    case '人工智能学院党委教工党组织':
+    case '人工智能学院教工党支部':
       return 'teacher-row'
-    case '人工智能学院党委本科生党组织1':
+    case '人工智能学院本科生第一党支部':
       return
-    case '人工智能学院党委本科生党组织2':
+    case '人工智能学院本科生第二党支部':
       return 'undergraduate-row'
-    case '人工智能学院党委研究生党组织':
+    case '人工智能学院研究生党支部':
       return 'graduate-row'
     default:
       return ''
@@ -197,17 +197,17 @@ const tableRowClassName = ({ row }: any) => {
 const formatter = (_row: any, column: any, cellValue: number) => {
   if (column.property === 'organization') {
     const map: Record<number, string> = {
-      0: '本科生1',
-      1: '本科生2',
-      2: '教工',
-      3: '研究生'
+      0: '人工智能学院本科生第一党支部',
+      1: '人工智能学院本科生第二党支部',
+      2: '人工智能学院教工党支部',
+      3: '人工智能学院研究生党支部'
     }
     return map[cellValue] ?? cellValue
   }
   return String(cellValue)
 }
 
-const input1 = ref('')
+// const input1 = ref('')
 const input2 = ref('')
 const select = ref('1')
 // 表格设置

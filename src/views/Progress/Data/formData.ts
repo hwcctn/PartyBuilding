@@ -21,7 +21,7 @@ export const formConfigs: any = {
       key: '2-1',
       label: '支部谈话时间',
       type: 'date',
-      placeholder: '与入党申请书落款时间一致',
+      placeholder: '请输入支部谈话时间',
       span: 20
     },
     { key: '2-2', label: '谈话人(单位、职务、签名)', span: 20 }
@@ -201,7 +201,7 @@ export const formConfigs: any = {
       key: '8-1',
       label: '党委备案时间',
       type: 'date',
-      placeholder: '请输入党委时间',
+      placeholder: '请输入党委备案时间',
       span: 20
     }
   ],
@@ -472,32 +472,28 @@ export const formConfigs: any = {
       label: '赞成票数',
       type: 'text',
       placeholder: '请输入赞成票数',
-      span: 6
+      span: 8
     },
     {
       key: '23-6',
       label: '反对票数',
       type: 'text',
       placeholder: '请输入反对票数',
-      span: 6
+      span: 8
     },
     {
       key: '23-7',
       label: '弃权票数',
       type: 'text',
       placeholder: '请输入弃权票数',
-      span: 6
+      span: 8
     },
     {
       key: '23-8',
       label: '会议决议',
-      type: 'select',
-      placeholder: '请选择',
-      options: [
-        { label: '是', value: '是' },
-        { label: '否', value: '否' }
-      ],
-      span: 6
+      type: 'text',
+      placeholder: '按期转正/延长预备期一年/半年/取消预备党员资格',
+      span: 24
     }
   ],
   24: [

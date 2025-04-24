@@ -3,7 +3,7 @@
     <div class="title">
       <span style="margin: 0; padding-bottom: 10px">基本信息</span>
       <!-- <el-button @click="outputFile">导出模版</el-button> -->
-      <el-button @click="exportDialogVisible = true">导出模版</el-button>
+      <el-button @click="exportDialogVisible = true">模板下载</el-button>
       <el-dialog v-model="exportDialogVisible" title="选择导出内容" width="30%">
         <el-radio-group v-model="exportOption">
           <el-radio label="积极分子" />

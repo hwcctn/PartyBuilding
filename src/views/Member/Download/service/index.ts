@@ -1,10 +1,10 @@
 import MYRequest from '@/service'
-export function postPDF(num:number) {
+export function postPDF(data: number[] ) {
   return MYRequest.get({
-    url: `/stu/wordFill/${num}`,
+    url: '/branch/wordFill',
+    data,
     headers: {
-      'Content-Disposition': 'inline',
-      'Content-Type': 'application/pdf'
+      'Content-Type': 'application/json'
     }
   })
 }

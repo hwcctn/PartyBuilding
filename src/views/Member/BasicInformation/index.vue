@@ -59,17 +59,10 @@
           >
             <el-sub-menu index="1">
               <template #title>
-                <span>系统管理</span>
-              </template>             
-                <el-menu-item index="/member/basicInfo/imformation" >
-                  管理人员
-                </el-menu-item>
-            </el-sub-menu>
-            <el-sub-menu index="2">
-              <template #title>
                 <span>我的账户</span>
               </template>             
                 <el-menu-item index="/member/basicInfo/passwordsetting">密码设置</el-menu-item>
+                <el-menu-item index="/member/basicInfo/imformation" >个人信息</el-menu-item>
             </el-sub-menu>
             <el-menu-item index="/member/basicInfo/download">模板下载</el-menu-item>
           </el-menu>·

@@ -55,7 +55,7 @@
             <div class="card-content">
               <div class="user-info">
                 <p><strong>ID：</strong>{{ user.id }}</p>
-                <p><strong>姓名：</strong>{{ user.name }}</p>
+                <p><strong>支部名称：</strong>{{ user.name }}</p>
                 <p><strong>账号：</strong>{{ user.account }}</p>
                 <p><strong>密码：</strong>{{ user.password }}</p>
               </div>

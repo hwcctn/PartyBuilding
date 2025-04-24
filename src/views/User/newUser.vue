@@ -39,10 +39,10 @@
             placeholder="请选择党组织"
             clearable
           >
-            <el-option label="本科一" value="本科一" />
-            <el-option label="本科二" value="本科二" />
-            <el-option label="教工" value="教工" />
-            <el-option label="研究生" value="研究生" />
+            <el-option label="人工智能学院教工党支部" value="人工智能学院教工党支部" />
+            <el-option label="人工智能学院研究生党支部" value="人工智能学院研究生党支部" />
+            <el-option label="人工智能学院本科生第一党支部" value="人工智能学院本科生第一党支部" />
+            <el-option label="人工智能学院本科生第二党支部" value="人工智能学院本科生第二党支部" />
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -90,7 +90,7 @@ const onSubmit = async () => {
     router.push(`/${role}/personnel`)
     ElMessage.success('添加用户成功')
   } else {
-    ElMessage.error(res.msg)
+    ElMessage.error('添加失败',res.msg)
   }
   // console.log('submit!')
 }

@@ -13,8 +13,8 @@ import { ref } from 'vue'
 const Menudata = ref({
   title: '支部页面',
   menu: [
-    { index: '/branch/member-info', label: '党员信息' },
-    { index: '/branch/personnel', label: '人员管理' }
+    { index: '/branch/member-info', label: '首页' },
+    // { index: '/branch/personnel', label: '人员管理' }
   ]
 })
 </script>

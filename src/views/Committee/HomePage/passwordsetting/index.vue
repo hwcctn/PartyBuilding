@@ -6,7 +6,7 @@
 
     <div style="text-align: center; margin-bottom: 20px;">
       <el-avatar :size="100" src="" />
-      <div style="margin-top: 10px; font-size: 20px;">{{username}}</div>
+      <div style="margin-top: 10px; font-size: 20px;">{{ savedaccount }}</div>
     </div>
 
     <el-form :model="form" label-width="80px" :rules="rules" ref="formRef">
@@ -32,17 +32,12 @@
 <script setup>
 import { reactive, ref, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
-import { useBranchInformationStore } from '@/stores/branch/information.ts'
-import { updateBranchInfo } from './service/index'
-//使用pinia
-const Branchstore = useBranchInformationStore();
+import { updateCommitteeInfo } from './service/index'
 // 模拟从 localStorage 读取账号信息
-const savedaccount = localStorage.getItem('account') 
-const savedname = localStorage.getItem('username')
+const savedaccount = localStorage.getItem('account')
 const savedpassword = localStorage.getItem('password')
 // 表单数据
 const form = reactive({
-  name: savedname,
   password: savedpassword,
 })
 
@@ -56,9 +51,9 @@ const rules = {
 
 // 初始化数据
 onMounted(() => {
-  if (savedname) {
-    Branchstore.setBranchInfo(savedname, savedpassword)
-  }
+  const savedname = localStorage.getItem('name')
+  if (savedname) form.name = savedname
+  if (savedpassword) form.password = savedpassword
 })
 
 // 提交处理
@@ -67,15 +62,12 @@ const onSubmit = () => {
     if (!valid) return
     try {
       const payload = {
-        name: form.name,
         password: form.password || '' // 如果为空字符串，后端看情况处理
       }
-      const res = await updateBranchInfo(payload)
+      const res = await updateCommitteeInfo(payload)
       console.log("返回的数据",res)
       //更新pinia数据
-      localStorage.setItem('username', form.name)
       localStorage.setItem('password', form.password)
-      Branchstore.setBranchInfo(form.name, form.password)
       // form.password = '' // 清空密码字段
       ElMessage.success('保存成功')
     } catch (error) {
@@ -92,5 +84,4 @@ const onReset = () => {
 }
 </script>
 <style lang="">
-
 </style>

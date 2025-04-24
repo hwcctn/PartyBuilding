@@ -1,4 +1,5 @@
 <template>
+  <!-- 这个是组件，被引用了 -->
   <div>
     <User />
   </div>

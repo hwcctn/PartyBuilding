@@ -15,7 +15,7 @@ import Personnel from '@/views/User/index.vue'
 // import { useUserStore } from '@/stores'
 // 声明 RouteMeta类型
 import 'vue-router'
-import path from 'path'
+// import path from 'path'
 declare module 'vue-router' {
   interface RouteMeta {
     requiresAuth?: boolean
@@ -111,8 +111,18 @@ const routes: Array<RouteRecordRaw> = [
             path: 'Information',
             component: () => import('@/views/Branch/MemberInfo/account/information/index.vue'),
             meta: {
-                title: '密码设置'
+                title: '个人信息'
             }
+          },
+          // {
+          //   path: 'personnel',
+          //   component: () => import('@/views/Branch/MemberInfo/Personnelinfo/index.vue'),
+          //   meta: { role: 'branch' }
+          // },
+          {
+            path: '/branch/personnel',
+            component: Personnel,
+            meta: { role: 'branch' }
           },
           {
             path: 'organization',
@@ -134,11 +144,11 @@ const routes: Array<RouteRecordRaw> = [
       //   path: '/:role(branch|committee)/personnel',
       //   component: Personnel
       // }
-      {
-        path: '/branch/personnel',
-        component: Personnel,
-        meta: { role: 'branch' }
-      }
+      // {
+      //   path: '/branch/personnel',
+      //   component: Personnel,
+      //   meta: { role: 'branch' }
+      // }
       // {
       //   path: '/branch/personnel',
       //   component: BPersonnel
@@ -161,29 +171,71 @@ const routes: Array<RouteRecordRaw> = [
     path: '/committee',
     component: Committee,
     meta: { requiresAuth: true, allowedRoles: ['committee'] },
+    redirect: '/committee/home/member-info',
     children: [
       {
-        path: '/committee/member-info',
-        component: CMemberIndfo
-      },
-      // {
-      //   path: '/committee/personnel',
-      //   component: CPersonnel
-      // },
-      {
-        path: '/committee/personnel',
-        component: Personnel,
-        meta: { role: 'committee' }
-      },
-      // {
-      //   path: '/:role(branch|committee)/personnel',
-      //   component: Personnel
-      // },
-      {
-        path: '/committee/branch-manage',
-        component: CBranchManage
-      }
+        path: '/committee/home',
+        component: () => import('@/views/Committee/HomePage/index.vue'),
+        children: [
+          {
+            path: '/committee/home/member-info',
+            component: CMemberIndfo,
+            meta: { title: '基本信息' }
+          },
+          {
+            path: '/committee/home/passwordsetting',
+            component: () => import('@/views/Committee/HomePage/passwordsetting/index.vue'),
+            meta: {
+              title: '密码设置'
+            }
+          },
+          {
+            path: '/committee/home/rootbranch',
+            component: () => import('@/views/Committee/HomePage/rootbranch/index.vue'),
+            meta: {
+              title: '基层党支部'
+            }
+          },
+          {
+            path: '/committee/personnel',
+            component: Personnel,
+            meta: { role: 'committee' }
+          },
+          // {
+          //   path: '/:role(branch|committee)/personnel',
+          //   component: Personnel
+          // },
+          {
+            path: '/committee/home/branch-manage',
+            component: CBranchManage,
+            meta: { title: '党员发展管理' }
+          }
+        ]
+      }, 
     ]
+    // children: [
+    //   {
+    //     path: '/committee/member-info',
+    //     component: CMemberIndfo
+    //   },
+    //   // {
+    //   //   path: '/committee/personnel',
+    //   //   component: CPersonnel
+    //   // },
+    //   {
+    //     path: '/committee/personnel',
+    //     component: Personnel,
+    //     meta: { role: 'committee' }
+    //   },
+    //   // {
+    //   //   path: '/:role(branch|committee)/personnel',
+    //   //   component: Personnel
+    //   // },
+    //   {
+    //     path: '/committee/branch-manage',
+    //     component: CBranchManage
+    //   }
+    // ]
   },
 
   {

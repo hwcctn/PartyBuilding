@@ -3,7 +3,10 @@
   <!-- <iframe src="/public/test.pdf" type="application/pdf" class="main"></iframe> -->
   <div class="container">
     <!-- <el-button @click="outputFile" type="primary">导出模版</el-button> -->
-    <el-button @click="exportDialogVisible = true">导出模版</el-button>
+    <el-button 
+    @click="exportDialogVisible = true"
+    style="font-size: 30px; padding: 30px 30px;"
+    >模板下载</el-button>
     <el-dialog v-model="exportDialogVisible" title="选择导出内容" width="30%">
       <el-checkbox-group v-model="exportOptions">
         <el-checkbox label="积极分子" />
@@ -38,7 +41,7 @@ const confirmExport = async () => {
     ElMessage.warning('请至少选择一项导出内容')
     return
   }
-  const num = optionMap[exportOptions.value]
+  const ids = exportOptions.value.map(label => optionMap[label])
   exportDialogVisible.value = false
 
   const loading = ElLoading.service({
@@ -46,26 +49,30 @@ const confirmExport = async () => {
     text: '数据加载中请稍后',
     background: 'rgba(0, 0, 0, 0.7)'
   })
-  await postPDF(num)
-    .then((res) => {
-      console.log('返回内容:', res)
-      loading.close()
-      const downloadUrl = res?.url
-      if (downloadUrl) {
-        const link = document.createElement('a')
-        link.href = downloadUrl
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-        ElMessage.success('下载成功')
-        console.log(res)
-      } else {
-        ElMessage.warning(`下载异常`)
-      }
+  try {
+    const res = await postPDF({ ids })
+    loading.close()
+    console.log(res)
+    const urls = [res.url, res.url1, res.url2].filter(Boolean)
+    if (urls.length === 0) {
+      ElMessage.warning('未返回可下载链接')
+      return
+    }
+
+    urls.forEach(url => {
+      const link = document.createElement('a')
+      link.href = url
+      link.download = '' // 可选：指定下载文件名
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
     })
-    .catch((err) => {
-      ElMessage.error(`下载失败.错误：${err}`)
-    })
+
+    ElMessage.success('下载成功')
+  } catch (error) {
+    loading.close()
+    ElMessage.error(`下载失败，错误信息：${error}`)
+  }
 }
 
 // const outputFile = async () => {
