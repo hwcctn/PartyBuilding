@@ -31,14 +31,15 @@
       <el-button type="primary" @click="toggleEditMode">
         {{ isEditing ? '保存' : '编辑' }}
       </el-button>
+      <el-button @click="exportDialogVisible = true">模板下载</el-button>
     </div>
-    <el-button @click="exportDialogVisible = true">模板下载</el-button>
+    <!-- <el-button @click="exportDialogVisible = true">模板下载</el-button> -->
       <el-dialog v-model="exportDialogVisible" title="选择导出内容" width="30%">
-        <el-radio-group v-model="exportOptions">
-          <el-radio label="积极分子" />
-          <el-radio label="发展对象" />
-          <el-radio label="预备党员" />
-        </el-radio-group>
+        <el-checkbox-group v-model="exportOptions">
+          <el-checkbox label="积极分子" />
+          <el-checkbox label="发展对象" />
+          <el-checkbox label="预备党员" />
+        </el-checkbox-group>
         <template #footer>
           <el-button @click="exportDialogVisible = false">取消</el-button>
           <el-button type="primary" @click="confirmExport">确定导出</el-button>
@@ -62,20 +63,22 @@ console.log(UserInfoEdit) // 仅用于消除报错，不推荐生产环境使用
 //模板下载
 import { postPDF } from './service'
 const exportDialogVisible = ref(false) //显示
-const exportOptions = ref('') //单选框绑定，值为0，1，2
+const exportOptions = ref<string[]>([])//单选框绑定，值为0，1，2
 // 单选项与数值映射
 const optionMap: Record<string, number> = {
   积极分子: 0,
   发展对象: 1,
   预备党员: 2
 }
+const route = useRoute()
+const { role, uid } = route.params
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const confirmExport = async () => {
   if (exportOptions.value.length === 0) {
     ElMessage.warning('请至少选择一项导出内容')
     return
   }
-  const num = optionMap[exportOptions.value]
+  const ids = exportOptions.value.map(option => optionMap[option])
   exportDialogVisible.value = false
 
   const loading = ElLoading.service({
@@ -83,7 +86,7 @@ const confirmExport = async () => {
     text: '数据加载中请稍后',
     background: 'rgba(0, 0, 0, 0.7)'
   })
-  await postPDF(num)
+  await postPDF(uid as string, ids)
     .then((res) => {
       console.log('返回内容:', res)
       loading.close()

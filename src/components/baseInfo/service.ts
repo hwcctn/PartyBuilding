@@ -5,8 +5,9 @@ import MYRequest from '@/service'
 //   })
 // }
 export function postPDF(uid: string, ids: number[]) {
-  return MYRequest.get({
+  return MYRequest.post({
     url: `/branch/wordFill/${uid}`,
-    params: { ids }  // GET 请求用 params 传递
+    // params: { ids: JSON.stringify(ids) }   // GET 请求用 params 传递
+    data: { ids }
   })
 }

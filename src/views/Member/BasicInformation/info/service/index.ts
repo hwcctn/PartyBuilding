@@ -1,5 +1,5 @@
 import MYRequest from '@/service'
-export function postPDF(num:number) {
+export function postPDF(ids:number) {
   return MYRequest.get({
     url: `/stu/wordFill/${num}`,
     headers: {

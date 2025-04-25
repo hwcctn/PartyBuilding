@@ -64,7 +64,7 @@
                 <el-menu-item index="/member/basicInfo/passwordsetting">密码设置</el-menu-item>
                 <el-menu-item index="/member/basicInfo/imformation" >个人信息</el-menu-item>
             </el-sub-menu>
-            <el-menu-item index="/member/basicInfo/download">模板下载</el-menu-item>
+            <!-- <el-menu-item index="/member/basicInfo/download">模板下载</el-menu-item> -->
           </el-menu>·
         </el-col>
       </el-row>
@@ -95,7 +95,19 @@ onMounted(async () => {
 })
 </script>
 
-<style scoped>
+<style lang="scss"   scoped>
+.tac{
+  .el-col {
+      width: 180px;
+      min-width: 180px;
+      max-width: 240px;
+      }
+  .mb-2{
+    font-size: 18px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+}
 .bcgimg {
   position: relative;
   width: 100%;

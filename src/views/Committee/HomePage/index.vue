@@ -102,14 +102,20 @@
   }
   
   </script>
-  <style lang="scss">
-  .tac{
+  <style lang="scss" scoped>
+  .tac{ 
+    .el-col {
+      width: 180px;
+      min-width: 180px;
+      max-width: 240px;
+      }
     .mb-2{
       font-size: 18px;
       margin-top: 10px;
       margin-bottom: 10px;
     }
   }
+
   .el-sub-menu .el-sub-menu__icon-arrow{
     margin-top: 20px;
   }

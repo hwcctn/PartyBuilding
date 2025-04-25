@@ -16,7 +16,7 @@
                 style="width: 115px; background-color: #fff"
               >
                 <el-option label="账号" value="account" />
-                <el-option label="姓名" value="name" />
+                <el-option label="支部名称" value="name" />
               </el-select>
             </template>
           </el-input>
@@ -31,15 +31,38 @@
             <el-icon style="margin-right: 10px"><CirclePlus /></el-icon>
             新建支部账号
           </el-button>
-
-          <el-button class="line" plainc @click="BatchRemove"
+          <!-- 处理一下这个删除功能 -->
+          <!-- <el-button class="line" plain @click="BatchRemove"
             >批量删除</el-button
-          >
+          > -->
         </div>
       </div>
-      <div class="bottom">
-        <div class="user-cards-container">
-          <el-card
+      <div class="bottom">     
+          <el-table
+            :data="userDemo"
+            style="width: 100%"
+            @selection-change="handleSelectionChange"
+            
+          >              <!-- <el-table-column type="selection" width="100" /> -->
+            <el-table-column prop="id" label="ID" width="200" />
+            <el-table-column prop="name" width="400" label="支部名称" />
+            <el-table-column prop="account" width="350" label="账号" />
+            <el-table-column prop="password" width="300" label="密码" />
+            <el-table-column fixed="right" label="操作" min-width="100">
+              <template #default="scope">
+                <el-button
+                  type="primary"
+                  size="small"
+                  @click="handleDelete(scope.row.id)"
+                >
+                  删除
+                </el-button>
+              </template>
+            </el-table-column>
+            <!-- <el-table-column label="操作" width="200"> -->
+
+          </el-table>
+          <!-- <el-card
             v-for="user in userDemo"
             :key="user.id"
             class="user-card"
@@ -60,37 +83,37 @@
                 <p><strong>密码：</strong>{{ user.password }}</p>
               </div>
             </div>
-          </el-card>
+          </el-card> -->
         </div>
-      </div>
     </div>
   </div>
-  <el-dialog
-    :model-value="visible"
-    title="编辑用户信息"
-    width="50%"
-    :show-close="false"
-    :draggable="true"
-    :close-on-click-modal="false"
-  >
-    <el-form :model="formData" label-width="120px">
-      <el-form-item label="账号">
-        <el-input v-model="formData.account" />
-      </el-form-item>
-      <el-form-item label="密码">
-        <el-input v-model="formData.password" show-password />
-      </el-form-item>
-      <el-form-item label="姓名">
-        <el-input v-model="formData.name" />
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="handleCancel">取消</el-button>
-        <el-button type="primary" @click="handleSubmit"> 确认 </el-button>
-      </span>
-    </template>
-  </el-dialog>
+  
+    <el-dialog
+      :model-value="visible"
+      title="编辑支部信息"
+      width="50%"
+      :show-close="false"
+      :draggable="true"
+      :close-on-click-modal="false"
+    >
+      <el-form :model="formData" label-width="120px">
+        <el-form-item label="账号">
+          <el-input v-model="formData.account" />
+        </el-form-item>
+        <el-form-item label="密码">
+          <el-input v-model="formData.password" show-password />
+        </el-form-item>
+        <el-form-item label="支部名称">
+          <el-input v-model="formData.name" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="handleCancel">取消</el-button>
+          <el-button type="primary" @click="handleSubmit"> 确认 </el-button>
+        </span>
+      </template>
+    </el-dialog>
 </template>
 
 <script setup lang="ts">
@@ -112,6 +135,9 @@ const formData = ref({
 const userDemo = ref<User[]>([])
 const selectedUsers = ref<string[]>([])
 
+  const handleSelectionChange = (val: User[]) => {
+  selectedUsers.value = val.map((user) => user.id)
+}
 const toggleSelect = (userId: string, checked?: CheckboxValueType) => {
   const index = selectedUsers.value.indexOf(userId)
   if (checked) {
@@ -138,9 +164,15 @@ const handleSubmit = async () => {
   visible.value = false
 }
 // 删除
-const BatchRemove = () => {
-  console.log('删除成功')
+const handleDelete = (id: string) => {
+  console.log('删除id为', id)
+  // 你可以在这里调用接口删除该用户
+  // 删除成功后调用 searchUser() 重新拉取数据
 }
+
+// const BatchRemove = () => {
+//   console.log('删除成功')
+// }
 // 查询
 const input = ref('')
 const select = ref('')

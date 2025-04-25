@@ -13,7 +13,7 @@ import { ref } from 'vue'
 const Menudata = ref({
   title: '党委界面',
   menu: [
-    { index: '/committee/home', label: '首页' },
+    { index: '/committee/home/branch-manage', label: '首页' },
     // { index: '/committee/member-info', label: '党员信息' },
     // { index: '/committee/personnel', label: '人员管理' },
     // { index: '/committee/branch-manage', label: '支部管理' }

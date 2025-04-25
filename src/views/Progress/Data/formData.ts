@@ -435,7 +435,7 @@ export const formConfigs: any = {
       span: 20
     },
     {
-      key: '22-1',
+      key: '22-2',
       label: '转正公示起止时间',
       type: 'text',
       placeholder: '请输入转正公示起止时间',

@@ -5,11 +5,11 @@
       <!-- <el-button @click="outputFile">导出模版</el-button> -->
       <el-button @click="exportDialogVisible = true">模板下载</el-button>
       <el-dialog v-model="exportDialogVisible" title="选择导出内容" width="30%">
-        <el-radio-group v-model="exportOption">
-          <el-radio label="积极分子" />
-          <el-radio label="发展对象" />
-          <el-radio label="预备党员" />
-        </el-radio-group>
+        <el-checkbox-group v-model="exportOptions">
+          <el-checkbox label="积极分子" />
+          <el-checkbox label="发展对象" />
+          <el-checkbox label="预备党员" />
+        </el-checkbox-group>
         <template #footer>
           <el-button @click="exportDialogVisible = false">取消</el-button>
           <el-button type="primary" @click="confirmExport">确定导出</el-button>
@@ -53,13 +53,14 @@ const props = defineProps<{
 }>()
 console.log('传过来的人员信息', props.memberInfo)
 
-const info = ref(props.memberInfo)
+
 import { useRoute } from 'vue-router'
 import { postPDF } from './service'
 const route = useRoute()
 const { role, uid } = route.params
 const exportDialogVisible = ref(false) //显示
-const exportOption = ref('') //单选框绑定，值为0，1，2
+const exportOptions = ref<string[]>([]) //单选框绑定，值为0，1，2
+const info = ref(props.memberInfo)
 // 单选项与数值映射
 const optionMap: Record<string, number> = {
   积极分子: 0,
@@ -67,12 +68,12 @@ const optionMap: Record<string, number> = {
   预备党员: 2
 }
 const confirmExport = async () => {
-  if (exportOption.value.length === 0) {
+  if (exportOptions.value.length === 0) {
     ElMessage.warning('请至少选择一项导出内容')
     return
   }
-  const num = optionMap[exportOption.value]
-  console.log(`调用接口地址: /${role}/wordFill/${uid}/${num}`)
+    // 将多个选项转换为对应的数字 ID 数组
+  const ids = exportOptions.value.map(option => optionMap[option])
   exportDialogVisible.value = false
 
   const loading = ElLoading.service({
@@ -80,25 +81,31 @@ const confirmExport = async () => {
     text: '数据加载中请稍后',
     background: 'rgba(0, 0, 0, 0.7)'
   })
-  await postPDF(role as string, uid as string, num)
+  await postPDF(uid as string, ids)
     .then((res) => {
       console.log('返回内容:', res)
       loading.close()
-      const downloadUrl = res.url
-      if (downloadUrl) {
+
+      const urls = [res?.url, res?.url1, res?.url2].filter(Boolean)
+      if (urls.length === 0) {
+        ElMessage.warning('未返回可下载链接')
+        return
+      }
+
+      // 创建下载链接并下载
+      urls.forEach(url => {
         const link = document.createElement('a')
-        link.href = downloadUrl
+        link.href = url
         document.body.appendChild(link)
         link.click()
-        document.body.removeChild(link)
-        ElMessage.success('下载成功')
-        console.log(res)
-      } else {
-        ElMessage.warning(`下载异常`)
-      }
+        // document.body.removeChild(link)
+      })
+      
+      ElMessage.success('下载成功')
     })
     .catch((err) => {
-      ElMessage.error(`下载失败.错误：${err}`)
+      loading.close()
+      ElMessage.error(`下载失败. 错误：${err}`)
     })
 }
 
