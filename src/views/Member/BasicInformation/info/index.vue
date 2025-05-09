@@ -70,8 +70,8 @@ const optionMap: Record<string, number> = {
   发展对象: 1,
   预备党员: 2
 }
-const route = useRoute()
-const { role, uid } = route.params
+// const route = useRoute()
+// const { role, uid } = route.params
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const confirmExport = async () => {
   if (exportOptions.value.length === 0) {
@@ -86,25 +86,34 @@ const confirmExport = async () => {
     text: '数据加载中请稍后',
     background: 'rgba(0, 0, 0, 0.7)'
   })
-  await postPDF(uid as string, ids)
+  await postPDF(ids)
     .then((res) => {
-      console.log('返回内容:', res)
       loading.close()
-      const downloadUrl = res?.url
-      if (downloadUrl) {
-        const link = document.createElement('a')
-        link.href = downloadUrl
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-        ElMessage.success('下载成功')
-        console.log(res)
-      } else {
-        ElMessage.warning(`下载异常`)
+
+      const urls = [res?.url, res?.url1, res?.url2].filter(Boolean)
+      if (urls.length === 0) {
+        ElMessage.warning('未返回可下载链接')
+        return
       }
+
+      // 创建下载链接并下载
+      urls.forEach(url => {
+        const iframe = document.createElement('iframe')
+        iframe.style.display = 'none'
+        iframe.src = url
+        document.body.appendChild(iframe)
+
+        // 下载后移除 iframe，防止 DOM 积压
+        setTimeout(() => {
+          document.body.removeChild(iframe)
+        }, 2000)
+      })
+      
+      ElMessage.success('下载成功')
     })
     .catch((err) => {
-      ElMessage.error(`下载失败.错误：${err}`)
+      loading.close()
+      ElMessage.error(`下载失败. 错误：${err}`)
     })
 }
 console.log(confirmExport)

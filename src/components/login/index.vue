@@ -90,7 +90,6 @@ const login = async () => {
     account: User.account,
     password: User.password
   }
-  console.log(User.role)
   switch (User.role) {
     case 'member':
       res = await postMemberLogin(payload)

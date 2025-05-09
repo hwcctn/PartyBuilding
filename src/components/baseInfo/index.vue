@@ -57,7 +57,7 @@ console.log('传过来的人员信息', props.memberInfo)
 import { useRoute } from 'vue-router'
 import { postPDF } from './service'
 const route = useRoute()
-const { role, uid } = route.params
+const { uid } = route.params
 const exportDialogVisible = ref(false) //显示
 const exportOptions = ref<string[]>([]) //单选框绑定，值为0，1，2
 const info = ref(props.memberInfo)
@@ -94,11 +94,15 @@ const confirmExport = async () => {
 
       // 创建下载链接并下载
       urls.forEach(url => {
-        const link = document.createElement('a')
-        link.href = url
-        document.body.appendChild(link)
-        link.click()
-        // document.body.removeChild(link)
+        const iframe = document.createElement('iframe')
+        iframe.style.display = 'none'
+        iframe.src = url
+        document.body.appendChild(iframe)
+
+        // 下载后移除 iframe，防止 DOM 积压
+        setTimeout(() => {
+          document.body.removeChild(iframe)
+        }, 2000)
       })
       
       ElMessage.success('下载成功')

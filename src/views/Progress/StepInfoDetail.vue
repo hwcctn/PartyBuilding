@@ -120,7 +120,10 @@ const formatLabel = () => {
   const labeledData: Record<string, string> = {}
   Object.values(msgData.value).forEach((value) => {
     const label = value.label
-    const content = value.content
+    let content = value.content
+    if (Array.isArray(content) && content.length === 2) {
+      content = `${content[0]}至${content[1]}`
+    }
     labeledData[label as string] = content
   })
   return labeledData

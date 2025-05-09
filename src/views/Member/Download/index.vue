@@ -41,7 +41,7 @@ const confirmExport = async () => {
     ElMessage.warning('请至少选择一项导出内容')
     return
   }
-  const ids = exportOptions.value.map(label => optionMap[label])
+  const ids = exportOptions.value.map(option => optionMap[option])
   exportDialogVisible.value = false
 
   const loading = ElLoading.service({
@@ -49,30 +49,35 @@ const confirmExport = async () => {
     text: '数据加载中请稍后',
     background: 'rgba(0, 0, 0, 0.7)'
   })
-  try {
-    const res = await postPDF({ ids })
-    loading.close()
-    console.log(res)
-    const urls = [res.url, res.url1, res.url2].filter(Boolean)
-    if (urls.length === 0) {
-      ElMessage.warning('未返回可下载链接')
-      return
-    }
+  await postPDF(ids)
+    .then((res) => {
+      loading.close()
 
-    urls.forEach(url => {
-      const link = document.createElement('a')
-      link.href = url
-      link.download = '' // 可选：指定下载文件名
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
+      const urls = [res?.url, res?.url1, res?.url2].filter(Boolean)
+      if (urls.length === 0) {
+        ElMessage.warning('未返回可下载链接')
+        return
+      }
+
+      // 创建下载链接并下载
+      urls.forEach(url => {
+        const iframe = document.createElement('iframe')
+        iframe.style.display = 'none'
+        iframe.src = url
+        document.body.appendChild(iframe)
+
+        // 下载后移除 iframe，防止 DOM 积压
+        setTimeout(() => {
+          document.body.removeChild(iframe)
+        }, 2000)
+      })
+      
+      ElMessage.success('下载成功')
     })
-
-    ElMessage.success('下载成功')
-  } catch (error) {
-    loading.close()
-    ElMessage.error(`下载失败，错误信息：${error}`)
-  }
+    .catch((err) => {
+      loading.close()
+      ElMessage.error(`下载失败. 错误：${err}`)
+    })
 }
 
 // const outputFile = async () => {

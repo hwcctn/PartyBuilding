@@ -1,7 +1,7 @@
 <template>
   <div class="common-layout">
-    <el-container>
-      <el-header>
+    <el-container style="height: 100vh; flex-direction: column;">
+      <el-header style="height: 60px;">
         <div class="left">
           <svg-icon @click="goBack" name="return_back"></svg-icon>
         </div>

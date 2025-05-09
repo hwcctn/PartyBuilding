@@ -29,3 +29,8 @@ export function postAddBranch(BranchInfo: object) {
     params: BranchInfo
   })
 }
+export function deletebranch( id:any) {
+  return MYRequest.delete({
+    url: `/committee/branchDel/${id}`,
+  })
+}

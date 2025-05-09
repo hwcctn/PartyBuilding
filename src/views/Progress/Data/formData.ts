@@ -189,7 +189,7 @@ export const formConfigs: any = {
     {
       key: '7-2',
       label: '起止公示时间',
-      // type: 'datetimerange',
+      type: 'datetimerange',
 
       startplaceholder: '开始 日期',
       endplaceholder: '结束 日期',
@@ -384,8 +384,8 @@ export const formConfigs: any = {
     {
       key: '17-5',
       label: '预备起止时间',
-      // type: 'datetimerange',
-      span: 20
+      type: 'datetimerange',
+      span: 24
     }
   ],
   18: [
@@ -437,7 +437,7 @@ export const formConfigs: any = {
     {
       key: '22-2',
       label: '转正公示起止时间',
-      type: 'text',
+      type: 'datetimerange',
       placeholder: '请输入转正公示起止时间',
       span: 20
     }

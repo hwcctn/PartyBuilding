@@ -1,64 +1,25 @@
 <template>
   <div class="common-layout">
-    <el-container>
-      <!-- <el-aside style="width: 320px; height: 100%; overflow: hidden">
-        <el-card>
-          <template #header>
-            <div class="card-header">
-              <div style="margin-bottom: 12px">
-                <strong> 人工智能学院 </strong>
-              </div>
-              <div>
-                <el-input
-                  v-model="input1"
-                  style="width: 240px"
-                  placeholder="Type something"
-                >
-                  <template #prefix>
-                    <el-icon class="el-input__icon">
-                      <search />
-                    </el-icon>
-                  </template>
-                </el-input>
-              </div>
-            </div>
-          </template>
-          <div>
-            <template v-for="item in GroupTree" :key="item">
-              <div class="GroupList">
-                <svg-icon name="folder" style="margin-right: 10px"></svg-icon>
-                {{ item }}
-              </div>
-            </template>
-          </div>
-        </el-card>
-      </el-aside> -->
-      <el-row class="tac">
-        <el-col :span="24">
-          <h5 class="mb-2">人工智能学院支部</h5>
-          <el-menu
-            
-            class="el-menu-vertical-demo"
+    <el-container style="height: 100vh;">
+      <el-aside width="200px" style="background-color: #fff;">
+        <h5 class="aside-title">人工智能学院支部</h5>
+        <el-menu
+          class="el-menu-vertical-demo"
+          :default-active="$route.path"
+          @select="handleSelect"
+          router
+        >
+          <el-sub-menu index="1">
+            <template #title>
+              <span>我的账户</span>
+            </template>             
+            <el-menu-item index="/branch/member-info/passwordsetting">密码设置</el-menu-item>
+          </el-sub-menu>         
+          <el-menu-item index="/branch/member-info/manageperson">党员发展管理</el-menu-item>
+          <el-menu-item index="/branch/personnel">党员信息管理</el-menu-item>
+        </el-menu>
+      </el-aside>
 
-
-            :default-active="$route.path"
-            @select="handleSelect"
-            router
-          >
-            <el-sub-menu index="1">
-              <template #title>
-                <span>我的账户</span>
-              </template>             
-                <el-menu-item index="/branch/member-info/passwordsetting">密码设置</el-menu-item>
-            </el-sub-menu>
-         
-                <el-menu-item index="/branch/member-info/manageperson" > 党员发展管理 </el-menu-item>
-
-           
-                <el-menu-item index="/branch/personnel" >党员信息管理 </el-menu-item>
-          </el-menu>
-        </el-col>
-      </el-row>
       <el-main>
         <div class="content">
             <!-- 子组件展示结构的地方 -->
@@ -91,6 +52,23 @@ function handleSelect(index:any) {
 
 </script>
 <style lang="scss">
+.common-layout {
+  .aside-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 16px;
+    text-align: center;
+  }
+  .el-menu {
+    border-right: none; // 去掉菜单右边的线条
+    span{
+      margin-left: 10px;
+    }
+  .el-menu-item {
+      margin-left: 10px;
+    }
+  }
+}
 .tac{
   .el-col {
       width: 180px;

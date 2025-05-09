@@ -119,7 +119,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import type { CheckboxValueType } from 'element-plus'
-import { getBranchUsers, postAddBranch } from '../service/index'
+import { getBranchUsers, postAddBranch,deletebranch } from '../service/index'
 interface User {
   id: string
   name: string
@@ -146,6 +146,7 @@ const toggleSelect = (userId: string, checked?: CheckboxValueType) => {
     if (index !== -1) selectedUsers.value.splice(index, 1)
   }
 }
+console.log(toggleSelect)// 仅用于消除报错，不推荐生产环境使用
 // 新建账号
 const goTonewBranch = () => {
   visible.value = true
@@ -164,12 +165,23 @@ const handleSubmit = async () => {
   visible.value = false
 }
 // 删除
-const handleDelete = (id: string) => {
-  console.log('删除id为', id)
-  // 你可以在这里调用接口删除该用户
-  // 删除成功后调用 searchUser() 重新拉取数据
+async function handleDelete(userId: number) {
+  try {
+    await ElMessageBox.confirm('确定要删除该用户吗？', '警告', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    })
+    await deletebranch(userId)
+    searchUser()
+    ElMessage.success('删除成功')
+  } catch (error: any) {
+    if (error !== 'cancel') {
+      // 不是取消操作
+      ElMessage.error(error.response?.data?.message || '删除失败')
+    }
+  }
 }
-
 // const BatchRemove = () => {
 //   console.log('删除成功')
 // }
