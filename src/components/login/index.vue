@@ -66,6 +66,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
 const router = useRouter()
 import {
   postMemberLogin,
@@ -108,6 +109,7 @@ const login = async () => {
     localStorage.setItem('role', User.role);
     localStorage.setItem('account',User.account)
     localStorage.setItem('password',User.password)
+    localStorage.setItem('name',res.name)
     router.push(`/${User.role}`)
   } else {
     console.error('登录失败', res)

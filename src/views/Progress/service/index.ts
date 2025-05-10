@@ -41,3 +41,16 @@ export function putNextStep(uid: string, sid: string) {
     url: `/branch/next/${uid}/${sid}`
   })
 }
+
+export function updatecontacts(uid:any,data:any) {
+  return MYRequest.put({
+    url: `/branch/contacts/${uid}`,
+    data: data
+  })
+}
+export function updatesponsor(uid:any,data:any) {
+  return MYRequest.put({
+    url: `/branch/sponsor/${uid}`,
+    data: data
+  })
+}

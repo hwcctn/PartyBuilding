@@ -2,7 +2,7 @@
     <div class="common-layout">
       <el-container style="height: 100vh;">
         <el-aside width="200px" style="background-color: #fff;">
-            <h5 class="mb-2">人工智能学院党委</h5>
+            <h5 class="mb-2">党委菜单栏</h5>
             <el-menu
               
               class="el-menu-vertical-demo"

@@ -68,6 +68,25 @@
         </el-row>
       </el-form>
       <div>
+        <!-- <el-button 
+        class="stepInfo-button"
+        type="warning"
+        @click="dialogVisible = true"
+        >
+        更改联系人</el-button>
+
+        <el-dialog title="更改联系人" v-model="dialogVisible" width="30%">
+          <el-form :model="msgData" label-width="120px">
+            <el-form-item label="联系人姓名">
+              <el-input v-model="msgData.name.content" placeholder="请输入联系人姓名" />
+            </el-form-item>
+          </el-form>
+          <template #footer>
+            <el-button @click="dialogVisible = false">取消</el-button>
+            <el-button type="primary" @click="dialogVisible = false">确认</el-button>
+          </template>
+        </el-dialog> -->
+
         <el-button class="stepInfo-button" type="primary" @click="handleSave"
           >保存</el-button
         >
@@ -98,6 +117,8 @@ import {
   getUserStatus
 } from './service/index.ts'
 import { formConfigs } from './Data/formData.ts'
+const dialogVisible = ref(false)
+void dialogVisible.value // 👈 强制让 TS 识别这个变量被使用
 const route = useRoute()
 const sid = Number(route.params.sid)
 const uid = route.params.uid

@@ -2,7 +2,7 @@
   <div class="common-layout">
     <el-container style="height: 100vh;">
       <el-aside width="200px" style="background-color: #fff;">
-        <h5 class="aside-title">人工智能学院支部</h5>
+        <h5 class="aside-title">支部菜单栏</h5>
         <el-menu
           class="el-menu-vertical-demo"
           :default-active="$route.path"

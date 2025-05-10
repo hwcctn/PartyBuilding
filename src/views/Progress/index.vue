@@ -53,6 +53,92 @@
                   >
                     <StepContainer :stateCart="item" />
                   </template>
+                  <!-- <el-button class="stepInfo-button" type="warning" @click="dialogVisible = true">
+                    更改信息
+                  </el-button>
+                  <el-dialog v-model="dialogVisible" title="更改信息" width="900px">
+                    <span>更换党支部，培养联系人信息</span>
+                    <el-form-item label="单位及职位1">
+                      <el-input 
+                      v-model="data.position1" 
+                      placeholder="请输入"
+                      />
+                    </el-form-item>
+                    <el-form-item label="单位及职位2">
+                      <el-input 
+                      v-model="data.position2" 
+                      placeholder="请输入"
+                      />  
+                    </el-form-item>
+                    <el-form-item label="培养联系人1">
+                      <el-input 
+                      v-model="data.contact1" 
+                      placeholder="请输入"
+                      />
+                    </el-form-item>
+                    <el-form-item label="培养联系人2">
+                      <el-input 
+                      v-model="data.contact2" 
+                      placeholder="请输入"
+                      />
+                    </el-form-item>
+                    <template #footer>
+                      <el-button @click="dialogVisible = false">关闭</el-button>
+                      <el-button 
+                      type="primary"
+                      @click="updatedContacts"
+                      >
+                        提交
+                      </el-button>
+                    </template>
+                  </el-dialog> -->
+                  <el-button class="stepInfo-button" type="warning" @click="dialogVisible = true">
+                    更改信息
+                  </el-button>
+                  <el-dialog v-model="dialogVisible" title="更改信息" width="900px">
+                    <el-tabs v-model="activeTabName" class="custom-tabs" style="margin-top: 20px;">
+                      <el-tab-pane label="培养联系人信息" name="contact">
+                        <span>更换党支部和培养联系人</span>
+                        <el-form>
+                          <el-form-item label="单位及职位1">
+                            <el-input v-model="data.position1" placeholder="请输入" />
+                          </el-form-item>
+                          <el-form-item label="单位及职位2">
+                            <el-input v-model="data.position2" placeholder="请输入" />  
+                          </el-form-item>
+                          <el-form-item label="培养联系人1">
+                            <el-input v-model="data.contact1" placeholder="请输入" />
+                          </el-form-item>
+                          <el-form-item label="培养联系人2">
+                            <el-input v-model="data.contact2" placeholder="请输入" />
+                          </el-form-item>
+                        </el-form>
+                      </el-tab-pane>
+
+                      <el-tab-pane label="入党介绍人信息" name="sponsor">
+                        <span>更换入党介绍人和党支部</span>
+                        <el-form>
+                          <el-form-item label="入党介绍人1">
+                            <el-input v-model="data2.sponsor1" placeholder="请输入" />
+                          </el-form-item>
+                          <el-form-item label="入党介绍人2">
+                            <el-input v-model="data2.sponsor2" placeholder="请输入" />  
+                          </el-form-item>
+                          <el-form-item label="单位及职务1">
+                            <el-input v-model="data2.position1" placeholder="请输入" />
+                          </el-form-item>
+                          <el-form-item label="单位及职务2">
+                            <el-input v-model="data2.position2" placeholder="请输入" />
+                          </el-form-item>
+                        </el-form>
+                      </el-tab-pane>
+                    </el-tabs>
+
+                    <template #footer>
+                      <el-button @click="dialogVisible = false">关闭</el-button>
+                      <el-button type="primary" @click="updatedContacts">提交</el-button>
+                    </template>
+                  </el-dialog>
                 </div>
                 <div class="centent">
                   <RouterView />
@@ -71,9 +157,29 @@ import StepContainer from '@/views/Progress/components/StepContainer.vue'
 // import { ref, onMounted, watch } from 'vue'
 import { onMounted, ref } from 'vue'
 import { RouterView, useRouter, useRoute } from 'vue-router'
-import { getUserStatus } from './service'
+import { getUserStatus,updatecontacts,updatesponsor } from './service'
 // import type { StepGroup } from './service/style'
 import type { UserInfoItem } from './service/style'
+import { ElMessage } from 'element-plus'
+//弹窗
+let dialogVisible = ref(false)
+void dialogVisible.value // 👈 强制让 TS 识别这个变量被使用
+
+const activeTabName = ref('contact') // 默认选中第一个 tab
+//弹窗内容
+const data = ref({
+    position1: '',
+    position2: '',
+    contact1: '',
+    contact2: '',
+  })
+  const data2 = ref({
+    sponsor1: '',
+    sponsor2: '',
+    position1: '',
+    position2: '',
+  })
+
 // 用pinia提供
 // import { useBaseInfoStore } from './store/baseInfo.store'
 // import { storeToRefs } from 'pinia'
@@ -91,25 +197,39 @@ import { useStepCardStore } from './store/stepCard.store.ts'
 import { storeToRefs } from 'pinia'
 const stepCardStore = useStepCardStore()
 const { menuData } = storeToRefs(stepCardStore)
-// let menuData = ref<StepGroup[]>([])
 
-// 监听路由参数变化
-// watch(
-//   () => route.params.uid,
-//   async (newUid) => {
-//     if (newUid) {
-//       // 重置 store 状态
-//       menuData.value = []
-//       // 重新获取数据
-//       await getUserStatus(Number(newUid), role as string).then((res) => {
-//         menuData.value = res.stepInfo
-//         baseInfo.value = res.userInfo
-//         console.log('卡片信息', menuData.value)
-//       })
-//     }
-//   },
-//   { immediate: true }
-// )
+const updatedContacts = async () => {
+  if (activeTabName.value === 'contact') {
+    const res = await updatecontacts(uid, data.value)
+    dialogVisible.value = false
+    if ( res.code === 200) {
+      ElMessage({
+        message: '修改成功',
+        type: 'success',
+      }) 
+    } else {
+      ElMessage ({
+        message: '修改失败',
+        type:'error',
+      })
+    }
+  }
+  if (activeTabName.value === 'sponsor') {
+    const res = await updatesponsor(uid, data2.value)
+    dialogVisible.value = false 
+    if ( res.code === 200) {
+      ElMessage({
+        message: '修改成功',
+        type:'success',
+      }) 
+    } else 
+      ElMessage ({
+        message: '修改失败',
+        type:'error',
+      })
+    }
+  }
+  
 onMounted(async () => {
   menuData.value = []
   // 重新获取数据

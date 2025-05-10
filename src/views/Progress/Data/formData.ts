@@ -13,7 +13,7 @@ export const formConfigs: any = {
       label: '入党申请书接收人(单位、职务、签名)',
       type: 'text',
       span: 20
-    }
+    },
   ],
 
   2: [

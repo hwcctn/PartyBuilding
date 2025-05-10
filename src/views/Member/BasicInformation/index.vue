@@ -43,7 +43,8 @@ const memberStore = useMemberStore()
 const { getMemberAction } = memberStore
 import { useInformationStore } from '@/stores/Member/information.ts' // 路径按你项目结构来调整
 const informationStore = useInformationStore()
-const { name } = storeToRefs(informationStore)
+// const { name } = storeToRefs(informationStore)
+const name = localStorage.getItem('name')
 onMounted(async () => {
   await getMemberAction()
 })

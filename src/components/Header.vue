@@ -3,7 +3,7 @@
     <el-col :span="1">
       <div class="grid-content ep-bg-purple" />
     </el-col>
-    <el-col :span="20">
+    <el-col :span="17">
       <!-- 遍历菜单 -->
       <el-menu
         :default-active="activeIndex"
@@ -30,20 +30,21 @@
     <!-- <el-col :span="1">
       <div class="grid-content ep-bg-purple" />
     </el-col> -->
-    <el-col :span="2">
-      <el-icon :size="23" color="black">
+    <el-col :span="4" class="name">
+      <!-- <el-icon :size="20" color="black">
         <Bell />
-      </el-icon>
+      </el-icon> -->
       <div class="demo-basic--circle">
         <div class="block">
-          <el-avatar
+          <!-- <el-avatar
             :size="50"
             src="https://th.bing.com/th/id/OIP.7KH4CcveY3sV0Bv_zPyJVgAAAA?rs=1&pid=ImgDetMain"
-          />
+          /> -->
+          <div class="user-name">{{ name }}</div>
         </div>
       </div>
     </el-col>
-    <el-col :span="1">
+    <el-col :span="2">
       <!-- <div class="grid-content ep-bg-purple" /> -->
       <el-button link @click="goToLogin">退出登录 </el-button>
     </el-col>
@@ -63,10 +64,12 @@ const router = useRouter()
 const goToLogin = () => {
   router.push('/login')
 }
+const name = localStorage.getItem('name')
 // // 路由监听
 watch(route, (newRoute) => {
   activeIndex.value = newRoute.path
 })
+
 interface MenuItem {
   index: string
   label: string
@@ -78,35 +81,7 @@ interface PageData {
 defineProps<{
   Menudata: PageData
 }>()
-// 菜单数据
-// const menuList = ref([
-//   {
-//     index: '/desktop',
-//     label: '我的桌面',
-//     icon: markRaw(HomeFilled)
-//   },
-//   {
-//     index: '2',
-//     label: '发展党员管理',
-//     icon: markRaw(Folder)
-//   },
-//   {
-//     index: '/manageInfo',
-//     label: '党员信息管理',
-//     icon: markRaw(Folder)
-//   },
-//   {
-//     index: '4',
-//     label: '人员管理',
-//     icon: markRaw(Folder)
-//   },
 
-//   {
-//     index: '/mystatus',
-//     label: '我的情况',
-//     icon: markRaw(Folder)
-//   }
-// ])
 </script>
 
 <style scoped lang="scss">
@@ -145,6 +120,22 @@ defineProps<{
 .demo-basic--circle {
   margin-left: 20px;
 }
+.block{
+  display: flex;
+  align-items: center; /* 垂直居中 */
+  justify-content: center; /* 水平居中，如果需要的话 */
+  height: 60px; /* 或者指定高度 */
+
+  .user-name {
+    font-size: 16px;
+    font-weight: 600;
+    // line-height: 60px;
+    text-align: center;
+    align-items: center; /* 垂直居中 */
+}
+}
+
+
 </style>
 <style lang="scss">
 .el-sub-menu .el-sub-menu__icon-arrow {
