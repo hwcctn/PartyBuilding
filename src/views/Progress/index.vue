@@ -189,11 +189,11 @@ const data = ref({
 const baseInfo = ref<UserInfoItem[]>([])
 const router = useRouter()
 const route = useRoute()
-console.log('路由', route)
+
 const { role, uid } = route.params
 // const { role } = route.params
 const activeTab = ref(0) // 默认选中第一个标签
-import { useStepCardStore } from './store/stepCard.store.ts'
+import { useStepCardStore } from './store/stepCard.store'
 import { storeToRefs } from 'pinia'
 const stepCardStore = useStepCardStore()
 const { menuData } = storeToRefs(stepCardStore)
@@ -236,7 +236,6 @@ onMounted(async () => {
   await getUserStatus(Number(uid), role as string).then((res) => {
     menuData.value = res.stepInfo
     baseInfo.value = res.userInfo
-    console.log('卡片信息', menuData.value)
   })
 })
 
@@ -246,7 +245,6 @@ const handleSelect = (val: string) => {
 
 // 根据选中的标签获取内容
 const getContentByTab = (index: number) => {
-  // console.log(index)
   return menuData?.value[index]?.StateCartData
 }
 const getTitleByTab = (index: number) => {

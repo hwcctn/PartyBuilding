@@ -69,6 +69,7 @@
 import DataDisplay from '../../components/DataDisplay.vue'
 import { useRoute } from 'vue-router'
 import { onMounted } from 'vue'
+import { ElMessage } from 'element-plus'
 import {
   getCommitteeStepInfo,
   postCommitteeReview,
@@ -78,7 +79,6 @@ import { ref } from 'vue'
 const route = useRoute()
 const { sid, uid } = route.params
 
-// console.log(sid, uid)
 const msgData = ref<any[]>([])
 
 const stepStatus = ref('')
@@ -92,7 +92,6 @@ const handlePass = async () => {
   if (res?.msg) {
     await getStepInfoAction()
     ElMessage.success(`数据通过`)
-    // console.log(res)
   }
 }
 // 修改信息
@@ -101,7 +100,6 @@ const dataList = ref<any[]>([])
 const UpataInfo = () => {
   visible.value = true
   dataList.value = JSON.parse(JSON.stringify(msgData.value))
-  // console.log('提交修改')
 }
 const handleCancel = () => {
   visible.value = false
@@ -122,11 +120,9 @@ const handleSubmit = async () => {
       }
     }
   )
-  console.log('提交数据')
 }
 const getStepInfoAction = async () => {
   await getCommitteeStepInfo(uid as string, sid as string).then((res) => {
-    console.log('StepInfo结果信息', res)
     stepStatus.value = res.status
     if (res.msg) {
       msgData.value = res.msg

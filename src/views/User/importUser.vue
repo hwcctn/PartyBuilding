@@ -81,14 +81,12 @@ const submitUpload = async () => {
   })
   await addUsers(role, formData)
     .then((res) => {
-      console.log(res)
       if (res?.status === 500) {
         ElMessage.error(`文件上传失败：${res}`)
         return
       }
       ElMessage.success('文件上传成功')
       router.push(`/${role}/personnel`)
-      // console.log(res)
     })
     .catch((error) => {
       ElMessage.error(`文件上传失败：${error} `)

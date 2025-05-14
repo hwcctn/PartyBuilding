@@ -39,6 +39,8 @@ import { onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import Info from './info/index.vue'
 import { useMemberStore } from '@/stores/memberInfo/memberInfo'
+import { useRoute } from 'vue-router'
+const route = useRoute()
 const memberStore = useMemberStore()
 const { getMemberAction } = memberStore
 import { useInformationStore } from '@/stores/Member/information.ts' // 路径按你项目结构来调整

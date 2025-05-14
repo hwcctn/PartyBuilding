@@ -65,7 +65,6 @@ import { addUser } from './service/index.ts'
 const route = useRoute()
 const router = useRouter()
 const { role } = route.params
-// console.log('newdataRoute', role)
 const formInline = reactive({
   account: '',
   password: '',
@@ -92,7 +91,6 @@ const onSubmit = async () => {
   } else {
     ElMessage.error('添加失败',res.msg)
   }
-  // console.log('submit!')
 }
 </script>
 

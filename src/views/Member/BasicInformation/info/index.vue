@@ -54,12 +54,13 @@ import UserInfoDisplay from './UserInfoDisplay.vue'
 import UserInfoEdit from './UserInfoEdit.vue'
 import { putMemberInfo } from '../service'
 import { useMemberStore } from '@/stores/memberInfo/memberInfo'
+import { ElLoading } from 'element-plus'
 import { storeToRefs } from 'pinia'
 const memberStore = useMemberStore()
 const { memberInfo, image } = storeToRefs(memberStore)
 //避免报错
-console.log(UserInfoDisplay) // 仅用于消除报错，不推荐生产环境使用
-console.log(UserInfoEdit) // 仅用于消除报错，不推荐生产环境使用
+void UserInfoDisplay // 仅用于消除报错
+void UserInfoEdit // 仅用于消除报错
 //模板下载
 import { postPDF } from './service'
 const exportDialogVisible = ref(false) //显示
@@ -116,22 +117,22 @@ const confirmExport = async () => {
       ElMessage.error(`下载失败. 错误：${err}`)
     })
 }
-console.log(confirmExport)
+void confirmExport
 const isShow = ref(true)
-console.log(isShow)// 仅用于消除报错，不推荐生产环境使用
+void isShow
 const isEditing = ref(false)
 
 const toggleEditMode = () => {
   if (isEditing.value) {
     // info.value = { ...editableInfo.value }
     const res = putMemberInfo(memberInfo.value)
-    console.log(res)
+    void res;
   } else {
     // editableInfo.value = { ...info.value }
   }
   isEditing.value = !isEditing.value
 }
-console.log(toggleEditMode)
+void toggleEditMode
 // 头像上传
 import { ElMessage } from 'element-plus'
 // import { Plus } from '@element-plus/icons-vue'
@@ -141,21 +142,14 @@ import { postUploadAvatar } from '../service/index'
 
 const imageUrl = ref(image)
 
-// const handleAvatarSuccess: UploadProps['onSuccess'] = (
-//   response,
-//   uploadFile
-// ) => {
-//   imageUrl.value = URL.createObjectURL(uploadFile.raw!)
-// }
 const memberUpload: UploadRequestHandler = (option: UploadRequestOptions) => {
   const formData = new FormData()
   formData.append('avatar', option.file)
   return postUploadAvatar(formData).then((res) => {
     imageUrl.value = res.url
-    // console.log(res)
   })
 }
-console.log(memberUpload)
+void memberUpload
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
   if (rawFile.type !== 'image/jpeg' && rawFile.type !== 'image/png') {
     ElMessage.error('图片必须是 JPG 或 PNG 格式!')
@@ -166,7 +160,7 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
   }
   return true
 }
-console.log(beforeAvatarUpload)
+void beforeAvatarUpload
 
 
 </script>

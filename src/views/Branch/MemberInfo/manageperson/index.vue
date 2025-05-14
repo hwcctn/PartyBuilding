@@ -180,7 +180,6 @@ const select = ref('1')
 // 表格设置
 // @ts-ignore
 const handleClick = (row: any) => {
-  console.log(row.id)
   router.push({ path: `/branch/progress/${row.id}` })
 }
 let tableData = ref([])
@@ -194,20 +193,17 @@ const getTableData = () => {
     (page.value - 1) * size.value,
     page.value * size.value
   )
-  // console.log('数据展示', tableData.value, Modeldata.value)
 
   total.value = Modeldata.value.length
 }
 // page改变时的回调函数
 // @ts-ignore
 const currentChange = (val: any) => {
-  console.log('翻页，当前为第几页', val)
   page.value = val
   getTableData()
 }
 // @ts-ignore
 const sizeChange = (val: any) => {
-  console.log('改变每页多少条，当前一页多少条数据', val)
   size.value = val
   page.value = 1
   getTableData()
@@ -222,7 +218,6 @@ async function getMemberUsersAction() {
     }
     const res = await getMemberUsers(searchParams)
     Modeldata.value = res.msg
-    console.log('结果', res)
     getTableData()
   } catch (err) {
     ElMessage.error(`获取数据失败，请重试${err}`)
@@ -238,7 +233,7 @@ const resetUser = () => {
 
 onMounted(async () => {
   const res = await getMemberUsers()
-  console.log('党员信息数据', res)
+
   Modeldata.value = res.msg
   getTableData()
 })

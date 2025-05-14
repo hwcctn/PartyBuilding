@@ -150,10 +150,10 @@ import { useRouter, useRoute } from 'vue-router'
 import { getUsers, deleteUserByID, deleteUserByIDs, getExcel } from './service'
 import UpdateUser from './updateUser.vue'
 import type { User } from './type'
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 const router = useRouter()
 const route = useRoute()
-console.log('路由', route)
 const { role } = route.meta
 const input = ref('')
 const select1 = ref('')
@@ -177,18 +177,16 @@ const getTableData = () => {
     (page.value - 1) * size.value,
     page.value * size.value
   )
-  // console.log(tableData.value, Modeldata)
+
 
   total.value = Modeldata.value.length
 }
 // page改变时的回调函数
 const currentChange = (val: any) => {
-  console.log('翻页，当前为第几页', val)
   page.value = val
   getTableData()
 }
 const sizeChange = (val: any) => {
-  console.log('改变每页多少条，当前一页多少条数据', val)
   size.value = val
   page.value = 1
   getTableData()
@@ -202,7 +200,6 @@ const goTonewUser = () => {
 async function getUsersAtion(UsersParams: Record<string, string>) {
   try {
     const res = await getUsers(role as string, UsersParams)
-    // console.log('搜索', res)
     Modeldata.value = res.data
     getTableData()
   } catch (err) {
@@ -278,7 +275,6 @@ const currentEditUser = ref<User>({
 })
 const handleEditSuccess = () => {
   searchUser()
-  console.log('提交成功')
 }
 const openEditDialog = (rowdata: any) => {
   currentEditUser.value = rowdata
@@ -286,7 +282,6 @@ const openEditDialog = (rowdata: any) => {
 }
 // 人员导出
 const exportUser = async () => {
-  console.log('role', role)
   await getExcel(role as string).then((res) => {
     const excelUrl = res.url
     const link = document.createElement('a')

@@ -107,13 +107,13 @@ const routes: Array<RouteRecordRaw> = [
                 title: '密码设置'
             }
           },
-          {
-            path: 'Information',
-            component: () => import('@/views/Branch/MemberInfo/account/information/index.vue'),
-            meta: {
-                title: '个人信息'
-            }
-          },
+          // {
+          //   path: 'Information',
+          //   component: () => import('@/views/Branch/MemberInfo/account/information/index.vue'),
+          //   meta: {
+          //       title: '个人信息'
+          //   }
+          // },
           // {
           //   path: 'personnel',
           //   component: () => import('@/views/Branch/MemberInfo/Personnelinfo/index.vue'),

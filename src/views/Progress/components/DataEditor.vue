@@ -59,6 +59,7 @@
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { putBranchStepInfo } from '../service/index'
+import { ElMessage } from 'element-plus'
 const props = defineProps<{
   onSubmitSuccess: () => void
 }>()
@@ -80,7 +81,6 @@ const defaultValues: Record<number, Record<string, string>> = {
   }
 }
 const formData = ref({ ...defaultValues[sid] })
-// console.log('formData', formData)
 const formConfigs: any = {
   1: [
     {
@@ -277,15 +277,15 @@ const formatLabel = () => {
 }
 const handleSave = async () => {
   const labeledData = formatLabel()
-  console.log('labeledData', labeledData)
-  const res = await putBranchStepInfo(uid as string, sid.toString(), {
+
+  await putBranchStepInfo(uid as string, sid.toString(), {
     data: labeledData
+
   })
-  console.log('提交表格返回的数据', res)
+
   props.onSubmitSuccess()
   ElMessage.success('数据提交成功')
 
-  // console.log('formData', formData.value)
 }
 </script>
 

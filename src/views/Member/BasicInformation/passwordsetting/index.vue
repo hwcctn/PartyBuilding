@@ -68,14 +68,12 @@ const onSubmit = () => {
         password: form.password || '' // 如果为空字符串，后端看情况处理
       }
       const res = await updateuserInfo(payload)
-      console.log("返回的数据",res)
       //更新pinia数据
       localStorage.setItem('branchname', form.name)
       localStorage.setItem('password', form.password)
       // form.password = '' // 清空密码字段
       ElMessage.success('保存成功')
     } catch (error) {
-      console.error('更新失败:', error)
       ElMessage.error('更新失败，请稍后再试')
     }
   })

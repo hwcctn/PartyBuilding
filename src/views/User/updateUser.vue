@@ -54,14 +54,14 @@ import { UpdateUserByID } from './service'
 // import { ElMessage } from 'element-plus'
 // import { updateUser } from './service'
 import { useRoute } from 'vue-router'
+import { defineProps, defineEmits } from 'vue'
+import { ElMessage } from 'element-plus'
 const route = useRoute()
 const { role } = route.meta
-// console.log('updataRoute', route)
 const props = defineProps<{
   visible: boolean
   userData: User
 }>()
-console.log(props.visible)
 const emit = defineEmits(['update:visible', 'success'])
 
 const formData = ref<User>({
@@ -79,7 +79,6 @@ const formData = ref<User>({
 watch(
   () => props.userData,
   (newVal) => {
-    console.log('新数据', newVal)
     formData.value = { ...newVal }
   },
   { immediate: true, deep: true }
@@ -87,8 +86,7 @@ watch(
 
 const handleSubmit = async () => {
   try {
-    const res = await UpdateUserByID(role as string, formData.value)
-    console.log('修改结果是', res)
+    await UpdateUserByID(role as string, formData.value)
     ElMessage.success('修改成功')
     emit('success')
     emit('update:visible', false)

@@ -28,6 +28,7 @@ import 'pdfjs-dist/build/pdf.worker.entry'
 // import { onMounted, ref } from 'vue'
 import { postPDF } from './service'
 import { ref } from 'vue'
+import { ElMessage, ElLoading } from 'element-plus'
 const exportDialogVisible = ref(false) //显示
 const exportOptions = ref([]) //多选框绑定，值为0，1，2
 // 单选项与数值映射
@@ -80,46 +81,6 @@ const confirmExport = async () => {
     })
 }
 
-// const outputFile = async () => {
-//   const loading = ElLoading.service({
-//     lock: true,
-//     text: '数据加载中请稍后',
-//     background: 'rgba(0, 0, 0, 0.7)'
-//   })
-//   await postPDF()
-//     .then((res) => {
-//       loading.close()
-//       const downloadUrl = res.msg
-//       const link = document.createElement('a')
-//       link.href = downloadUrl
-//       document.body.appendChild(link)
-//       link.click()
-//       document.body.removeChild(link)
-//       ElMessage.success('下载成功')
-//       console.log(res)
-//     })
-//     .catch((err) => {
-//       ElMessage.error(`下载失败.错误：${err}`)
-//     })
-// }
-// onMounted(async () => {
-//   const pdf = await getDocument(objectUrl.value).promise
-//   const page = await pdf.getPage(1)
-//   const canvas = canvasRef.value
-//   if (!canvas) return
-//   const context = canvas.getContext('2d')
-//   const viewport = page.getViewport({ scale: 1.5 })
-
-//   canvas.height = viewport.height
-//   canvas.width = viewport.width
-//   await page.render({ canvasContext: context!, viewport }).promise
-// })
-// onMounted(async () => {
-//   const res = await postPDF()
-//   const response = await fetch(res)
-//   const blob = await response.blob()
-//   blobUrl.value = URL.createObjectURL(blob)
-// })
 </script>
 
 <style lang="scss" scoped>

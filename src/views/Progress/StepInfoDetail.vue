@@ -108,6 +108,7 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import { useRoute } from 'vue-router'
 import { ref, computed } from 'vue'
 import { onMounted } from 'vue'
+import { ElMessage } from 'element-plus'
 import {
   getBranchStepInfo,
   getCommitteeStepInfo,
@@ -115,8 +116,8 @@ import {
   putCommitteeStepInfo,
   putNextStep,
   getUserStatus
-} from './service/index.ts'
-import { formConfigs } from './Data/formData.ts'
+} from './service/index'
+import { formConfigs } from './Data/formData'
 const dialogVisible = ref(false)
 void dialogVisible.value // 👈 强制让 TS 识别这个变量被使用
 const route = useRoute()
@@ -130,10 +131,6 @@ const stepInfo = {
 }
 const bottomText = route.query.bottomText
 
-// const a = ref(['2025年4月16日', '2025年5月14日'])
-// watch(a, (n) => {
-//   console.log(n)
-// })
 // 根据路由参数动态获取表单配置
 const currentConfig = computed(() => formConfigs[sid] || [])
 // 提交表单数据处理
@@ -151,7 +148,6 @@ const formatLabel = () => {
 }
 const handleSave = async () => {
   const labeledData = formatLabel()
-  console.log('labeledData', labeledData)
   let res = null
   if (role === 'committee') {
     res = await putCommitteeStepInfo(uid as string, sid.toString(), {
@@ -162,7 +158,6 @@ const handleSave = async () => {
       data: labeledData
     })
   }
-  console.log('提交表格返回的数据', res)
   if (res?.response?.data?.code == '400') {
     ElMessage.error(res.response.data.error)
     getStepInfoAction()
@@ -177,17 +172,15 @@ const getStepInfoAction = async () => {
   if (role === 'committee') {
     await getCommitteeStepInfo(uid as string, String(sid)).then((res) => {
       msgData.value = res.msg
-      console.log('StepInfo结果信息', msgData.value)
     })
   } else if (role === 'branch') {
     await getBranchStepInfo(uid as string, String(sid)).then((res) => {
       msgData.value = res.msg
-      console.log('StepInfo结果信息', msgData.value)
     })
   }
 }
 import { useRouter } from 'vue-router'
-import { useStepCardStore } from './store/stepCard.store.ts'
+import { useStepCardStore } from './store/stepCard.store'
 const baseInfoSote = useStepCardStore()
 const { changeCardState } = baseInfoSote
 const router = useRouter()

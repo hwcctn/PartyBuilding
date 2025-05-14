@@ -120,6 +120,7 @@
 import { onMounted, ref } from 'vue'
 import type { CheckboxValueType } from 'element-plus'
 import { getBranchUsers, postAddBranch,deletebranch } from '../service/index'
+import { ElMessage,ElMessageBox } from 'element-plus'
 interface User {
   id: string
   name: string
@@ -146,7 +147,8 @@ const toggleSelect = (userId: string, checked?: CheckboxValueType) => {
     if (index !== -1) selectedUsers.value.splice(index, 1)
   }
 }
-console.log(toggleSelect)// 仅用于消除报错，不推荐生产环境使用
+// console.log(toggleSelect)// 仅用于消除报错，不推荐生产环境使用
+void toggleSelect
 // 新建账号
 const goTonewBranch = () => {
   visible.value = true
@@ -182,16 +184,13 @@ async function handleDelete(userId: number) {
     }
   }
 }
-// const BatchRemove = () => {
-//   console.log('删除成功')
-// }
+
 // 查询
 const input = ref('')
 const select = ref('')
 async function getUsersAtion(UsersParams: Record<string, string>) {
   try {
     const res = await getBranchUsers(UsersParams)
-    // console.log('搜索', res)
     userDemo.value = res.data
   } catch (err) {
     ElMessage.error(`获取数据失败，请重试${err}`)

@@ -57,15 +57,9 @@ watch(
   (newName) => {
     if (newName) {
       memberStore.setMemberInfo(newName)
-      console.log('存入 pinia 的 name:', newName)
     }
   },
   { immediate: true }
 )
-// import { useMemberStore } from '@/stores/memberInfo'
-// import { storeToRefs } from 'pinia'
-// const memberStore = useMemberStore()
-// const { memberInfo } = storeToRefs(memberStore)
-// console.log(memberInfo)
 </script>
 <style scoped></style>

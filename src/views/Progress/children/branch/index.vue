@@ -68,12 +68,13 @@
 // import DataDisplay from '../../components/DataDisplay.vue'
 import { useRoute } from 'vue-router'
 import { onMounted } from 'vue'
+import { ElMessage } from 'element-plus'
 import {
   getBranchStepInfo,
   putBranchStepInfo,
   putNextStep,
   getUserStatus
-} from '../../service/index.ts'
+} from '../../service/index'
 import { ref } from 'vue'
 
 const route = useRoute()
@@ -83,7 +84,7 @@ const role = route.params.role
 const bottomText = route.query.bottomText
 
 // 根据路由参数动态获取表单配置
-import {formConfigs} from '../../Data/formData.ts'
+import {formConfigs} from '../../Data/formData'
 import { computed } from 'vue'
 const currentConfig = computed(() => formConfigs[sid] || [])
 // 表单数据处理
@@ -98,11 +99,9 @@ const formatLabel = () => {
 }
 const handleSave = async () => {
   const labeledData = formatLabel()
-  console.log('labeledData', labeledData)
   const res = await putBranchStepInfo(uid as string, sid.toString(), {
     data: labeledData
   })
-  console.log('提交表格返回的数据', res)
   ElMessage.success(res.message)
 }
 
@@ -112,11 +111,10 @@ const msgData = ref<Record<string, { content: string; label?: string }>>({})
 const getBranchStepInfoAction = async () => {
   await getBranchStepInfo(uid as string, String(sid)).then((res) => {
     msgData.value = res.msg
-    console.log('StepInfo结果信息', msgData.value)
   })
 }
 import { useRouter } from 'vue-router'
-import { useStepCardStore } from '../../store/stepCard.store.ts'
+import { useStepCardStore } from '../../store/stepCard.store'
 const baseInfoSote = useStepCardStore()
 const { changeCardState } = baseInfoSote
 const router = useRouter()
@@ -127,7 +125,6 @@ const nextStep = async () => {
     // menuData.value = res.stepInfo
     // baseInfo.value = res.userInfo
     changeCardState(res.stepInfo)
-    // console.log('卡片信息', menuData.value)
   })
   router.back()
 }
