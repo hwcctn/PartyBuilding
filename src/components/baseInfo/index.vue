@@ -56,6 +56,7 @@ console.log('传过来的人员信息', props.memberInfo)
 
 import { useRoute } from 'vue-router'
 import { postPDF } from './service'
+import { ElLoading, ElMessage } from 'element-plus';
 const route = useRoute()
 const { uid } = route.params
 const exportDialogVisible = ref(false) //显示

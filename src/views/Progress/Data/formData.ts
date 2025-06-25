@@ -69,7 +69,42 @@ export const formConfigs: any = {
       key: '3-6',
       label: '党支部意见',
       type: 'textarea'
-    }
+    },
+    {
+      key: '3-7',
+      label: '群团组织推优会议时间',
+      type: 'date'
+    },
+    {
+      key: '3-8',
+      label: '人数',
+      type: 'text'
+    },
+    {
+      key: '3-9',
+      label: '实到人数',
+      type: 'text'
+    },
+    {
+      key: '3-10',
+      label: '应到人数',
+      type: 'text'
+    },
+    {
+      key: '3-11',
+      label: '赞成人数',
+      type: 'text'
+    },
+    {
+      key: '3-12',
+      label: '反对人数',
+      type: 'text'
+    },
+    {
+      key: '3-13',
+      label: '弃权人数',
+      type: 'text'
+    },
   ],
   4: [
     {

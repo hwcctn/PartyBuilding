@@ -34,6 +34,9 @@
     <el-descriptions-item label="联系电话" :span="3">
       <el-input v-model="memberInfo.phone" />
     </el-descriptions-item>
+    <el-descriptions-item label="户籍地址" :span="8">
+      <!-- <el-input v-model="memberInfo.phone" /> -->
+    </el-descriptions-item>
     <el-descriptions-item label="个人简历" :span="8">
       <el-input v-model="memberInfo.resume" type="textarea" />
     </el-descriptions-item>
