@@ -1,5 +1,6 @@
 <template>
-  <el-descriptions class="intro" title="基本情况" :column="8" border>
+  <div class="common-layout">
+    <el-descriptions class="intro" title="基本情况" :column="8" border>
     <el-descriptions-item label="姓名" :span="2">
       <el-input v-model="memberInfo.name" />
     </el-descriptions-item>
@@ -21,8 +22,8 @@
     <el-descriptions-item label="身份证号码" :span="2">
       <el-input v-model="memberInfo.identity_id" />
     </el-descriptions-item>
-    <el-descriptions-item label="政治面貌" :span="3">
-      <el-input v-model="memberInfo.politicalStatus" />
+    <el-descriptions-item label="入团时间" :span="3">
+      <el-input v-model="memberInfo.political_time" />
     </el-descriptions-item>
 
     <el-descriptions-item label="家庭详细住址" :span="3">
@@ -35,12 +36,13 @@
       <el-input v-model="memberInfo.phone" />
     </el-descriptions-item>
     <el-descriptions-item label="户籍地址" :span="8">
-      <!-- <el-input v-model="memberInfo.phone" /> -->
+      <el-input v-model="memberInfo.domicile" />
     </el-descriptions-item>
     <el-descriptions-item label="个人简历" :span="8">
       <el-input v-model="memberInfo.resume" type="textarea" />
     </el-descriptions-item>
   </el-descriptions>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -49,9 +51,13 @@ import { storeToRefs } from 'pinia'
 const memberStore = useMemberStore()
 const { memberInfo } = storeToRefs(memberStore)
 </script>
-<style lang="scss">
-.el-textarea__inner {
+<style lang="scss" scoped>
+.common-layout {
+  // width: 1400px;
+  height: 100%;
+  .el-textarea__inner {
   resize: none;
   height: 150px;
+  }
 }
 </style>

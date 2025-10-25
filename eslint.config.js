@@ -31,7 +31,7 @@ export default [
   {
     plugins: { prettier: pluginPrettier },
     rules: {
-      'prettier/prettier': 'error', // 让 ESLint 检测 Prettier 格式问题
+      // 'prettier/prettier': 'error', // 让 ESLint 检测 Prettier 格式问题
       'vue/multi-word-component-names': 'off',
       '@typescript-eslint/no-empty-interface': 'off',
       '@typescript-eslint/no-empty-object-type': 'off',

@@ -1,5 +1,6 @@
 <template lang="">
-  <el-card v-show="isShow">
+  <div class="common-layout">
+    <el-card v-show="isShow">
     <div class="demo-fit">
       <div class="block">
         <!-- <el-avatar
@@ -46,6 +47,7 @@
         </template>
       </el-dialog>
   </el-card>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -171,7 +173,11 @@ void beforeAvatarUpload
   height: 155px;
 } */
 /* 头像样式 */
-:deep(.avatar-uploader) .el-upload {
+.common-layout {
+  width: 1500px;
+  height: 100%;
+  // background-color: #fff;
+  :deep(.avatar-uploader) .el-upload {
   border: 1px dashed var(--el-border-color);
   border-radius: 6px;
   cursor: pointer;
@@ -206,5 +212,6 @@ void beforeAvatarUpload
 .button {
   margin-bottom: 30px;
 }
+}
 </style>
-<style lang="scss"></style>
+

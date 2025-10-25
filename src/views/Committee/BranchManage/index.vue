@@ -1,5 +1,6 @@
 <template>
-  <div class="managerUer">
+  <div class="common=layout">
+    <div class="managerUer">
     <div class="content">
       <div class="top">
         <div class="left">
@@ -114,6 +115,7 @@
         </span>
       </template>
     </el-dialog>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -217,7 +219,9 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
-.managerUer {
+.common-layout{
+  width: 1500px;
+  .managerUer {
   margin: 0 auto;
   width: 1500px;
   height: 100%;
@@ -286,4 +290,6 @@ onMounted(async () => {
   transform: translateY(-5px);
   transition: transform 0.3s ease;
 }
+}
+
 </style>

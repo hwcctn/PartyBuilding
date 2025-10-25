@@ -73,37 +73,48 @@ export const formConfigs: any = {
     {
       key: '3-7',
       label: '群团组织推优会议时间',
-      type: 'date'
+      type: 'date',
+      placeholder: '请输入时间',
     },
     {
       key: '3-8',
       label: '人数',
-      type: 'text'
+      type: 'text',
+      placeholder: '请输入人数',
     },
     {
       key: '3-9',
       label: '实到人数',
-      type: 'text'
+      type: 'text',
+      placeholder: '请输入人数',
     },
     {
       key: '3-10',
       label: '应到人数',
-      type: 'text'
+      type: 'text',
+      placeholder: '请输入人数',
     },
     {
       key: '3-11',
       label: '赞成人数',
-      type: 'text'
+      type: 'text',
+      placeholder: '请输入人数',
+      span:8,
     },
     {
       key: '3-12',
       label: '反对人数',
-      type: 'text'
+      type: 'text',
+      placeholder: '请输入人数',
+      span:8
+
     },
     {
       key: '3-13',
       label: '弃权人数',
-      type: 'text'
+      type: 'text',
+      placeholder: '请输入人数',
+      span:8
     },
   ],
   4: [

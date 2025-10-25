@@ -16,11 +16,12 @@ interface MemberInfo {
   origin?: string
   occupation?: string
   identity_id?: string
-  politicalStatus?: string
+  political_time?: string
   address?: string
   education?: string
   phone?: string
   resume?: string
+  domicile?:string
 }
 export const useMemberStore = defineStore('member', () => {
   const memberInfo = ref<MemberInfo>({})

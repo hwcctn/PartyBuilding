@@ -1,5 +1,6 @@
 <template>
-  <el-descriptions class="intro" title="基本情况" :column="8" border>
+  <div class="common-layout">
+    <el-descriptions class="intro" title="基本情况" :column="8" border>
     <el-descriptions-item label="姓名" :span="2">{{
       memberInfo?.name
     }}</el-descriptions-item>
@@ -21,8 +22,8 @@
     <el-descriptions-item label="身份证号码" :span="2">{{
       memberInfo?.identity_id
     }}</el-descriptions-item>
-    <el-descriptions-item label="政治面貌" :span="3">{{
-      memberInfo?.politicalStatus
+    <el-descriptions-item label="入团时间" :span="3">{{
+      memberInfo?.political_time
     }}</el-descriptions-item>
     <el-descriptions-item label="家庭详细住址" :span="3">{{
       memberInfo?.address
@@ -34,7 +35,7 @@
       memberInfo?.phone
     }}</el-descriptions-item>
     <el-descriptions-item label="户籍地址" :span="8">
-      <!-- <el-input v-model="memberInfo.phone" /> -->
+      {{ memberInfo.domicile }}
     </el-descriptions-item>
     <el-descriptions-item label="个人简历" :span="8"
       ><div style="white-space: pre-wrap">
@@ -42,7 +43,8 @@
       </div></el-descriptions-item
     >
     <!-- 显示政治面貌 -->
-  </el-descriptions>
+    </el-descriptions>
+  </div>
 </template>
 
 <script setup>
@@ -65,4 +67,10 @@ watch(
   { immediate: true }
 )
 </script>
-<style scoped></style>
+<style lang="scss" scoped>
+.common-layout {
+  // width: 1400px;
+  height: 100%;
+  // background-color: #fff;
+}
+</style>

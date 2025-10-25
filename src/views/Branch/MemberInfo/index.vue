@@ -17,6 +17,7 @@
           </el-sub-menu>         
           <el-menu-item index="/branch/member-info/manageperson">党员发展管理</el-menu-item>
           <el-menu-item index="/branch/personnel">党员信息管理</el-menu-item>
+          <el-menu-item index="/branch/member-info/template-generation">模板生成管理</el-menu-item>
         </el-menu>
       </el-aside>
 

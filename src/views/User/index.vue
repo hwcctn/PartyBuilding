@@ -1,5 +1,6 @@
 <template>
-  <div class="managerUer">
+  <div class="common-layout">
+    <div class="managerUer">
     <div class="content">
       <div class="top">
         <div class="search">
@@ -141,6 +142,7 @@
     @success="handleEditSuccess"
   />
   <!-- </div> -->
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -299,6 +301,9 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
+.common-layout{
+  width: 1500px;
+}
 .managerUer {
   margin: 0 auto;
   width: 1500px;

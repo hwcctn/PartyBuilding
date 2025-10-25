@@ -1,33 +1,45 @@
 <template>
-    <el-card style="width: 600px;">
-    <h3 style="border-bottom: 2px solid #0abf88; padding-bottom: 8px; margin-bottom: 20px;">
-      密码设置
-    </h3>
+  <div class="common-layout">
+    <el-card style="width: 600px">
+      <h3
+        style="
+          border-bottom: 2px solid #0abf88;
+          padding-bottom: 8px;
+          margin-bottom: 20px;
+        "
+      >
+        密码设置
+      </h3>
 
-    <div style="text-align: center; margin-bottom: 20px;">
-      <el-avatar :size="100" src="" />
-      <div style="margin-top: 10px; font-size: 20px;">{{ savedaccount }}</div>
-    </div>
+      <div style="text-align: center; margin-bottom: 20px">
+        <el-avatar :size="100" src="" />
+        <div style="margin-top: 10px; font-size: 20px">{{ savedaccount }}</div>
+      </div>
 
-    <el-form :model="form" label-width="80px" :rules="rules" ref="formRef">
-      <el-form-item label="账号:">
-        <el-input v-model="savedaccount" disabled />
-      </el-form-item>
+      <el-form :model="form" label-width="80px" :rules="rules" ref="formRef">
+        <el-form-item label="账号:">
+          <el-input v-model="savedaccount" disabled />
+        </el-form-item>
 
-      <!-- <el-form-item label="昵称:">
+        <!-- <el-form-item label="昵称:">
         <el-input v-model="form.name" />
       </el-form-item> -->
 
-      <el-form-item label="密码:">
-        <el-input v-model="form.password" show-password placeholder="不修改密码请留空" />
-      </el-form-item>
+        <el-form-item label="密码:">
+          <el-input
+            v-model="form.password"
+            show-password
+            placeholder="不修改密码请留空"
+          />
+        </el-form-item>
 
-      <el-form-item>
-        <el-button type="primary" @click="onSubmit">提交</el-button>
-        <el-button @click="onReset">重置</el-button>
-      </el-form-item>
-    </el-form>
-  </el-card>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit">提交</el-button>
+          <el-button @click="onReset">重置</el-button>
+        </el-form-item>
+      </el-form>
+    </el-card>
+  </div>
 </template>
 <script setup>
 import { reactive, ref, onMounted } from 'vue'
@@ -38,7 +50,7 @@ const savedaccount = localStorage.getItem('account')
 const savedpassword = localStorage.getItem('password')
 // 表单数据
 const form = reactive({
-  password: savedpassword,
+  password: savedpassword
 })
 
 // 表单引用
@@ -58,7 +70,7 @@ onMounted(() => {
 
 // 提交处理
 const onSubmit = () => {
-  formRef.value.validate(async(valid) => {
+  formRef.value.validate(async (valid) => {
     if (!valid) return
     try {
       const payload = {
@@ -81,5 +93,8 @@ const onReset = () => {
   form.password = ''
 }
 </script>
-<style lang="">
+<style lang="scss" scoped>
+  .common-layout{
+    width: 1500px;
+  }
 </style>

@@ -1,5 +1,6 @@
 <template>
-    <el-card style="width: 600px;">
+    <div class="common-layout">
+      <el-card style="width: 600px;">
     <h3 style="border-bottom: 2px solid #0abf88; padding-bottom: 8px; margin-bottom: 20px;">
       密码设置
     </h3>
@@ -28,6 +29,7 @@
       </el-form-item>
     </el-form>
   </el-card>
+    </div>
 </template>
 <script setup>
 import { reactive, ref, onMounted } from 'vue'
@@ -89,6 +91,10 @@ const onReset = () => {
   form.password = ''
 }
 </script>
-<style lang="">
+<style lang="scss" scoped>
+.common-layout {
+  width: 1500px;
+  height: 100%;
+}
 
 </style>

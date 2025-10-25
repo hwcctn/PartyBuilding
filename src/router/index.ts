@@ -97,73 +97,33 @@ const routes: Array<RouteRecordRaw> = [
             path: 'ManagePerson',
             component: () => import('@/views/Branch/MemberInfo/manageperson/index.vue'),
             meta: {
-                title: '管理人员'
+                title: '党员发展管理'
             }
           },
           {
             path: 'PasswordSetting',
             component: () => import('@/views/Branch/MemberInfo/account/passwordsetting/index.vue'),
             meta: {
-                title: '密码设置'
+                title: '密码设置',
             }
           },
-          // {
-          //   path: 'Information',
-          //   component: () => import('@/views/Branch/MemberInfo/account/information/index.vue'),
-          //   meta: {
-          //       title: '个人信息'
-          //   }
-          // },
-          // {
-          //   path: 'personnel',
-          //   component: () => import('@/views/Branch/MemberInfo/Personnelinfo/index.vue'),
-          //   meta: { role: 'branch' }
-          // },
           {
             path: '/branch/personnel',
             component: Personnel,
-            meta: { role: 'branch' }
-          },
-          {
-            path: 'organization',
-            component: () => import('@/views/Branch/MemberInfo/organization/index.vue'),
-            meta: {
-                title: '组织机构'
+            meta: { 
+              role: 'branch',
+              title: '党员信息管理'
             }
           },
           {
-            path: 'data_centre',
-            component: () => import('@/views/Branch/MemberInfo/data_centre/index.vue'),
-            meta: {
-                title: '数据中心'
+            path: 'template-generation',
+            component: () => import('@/views/Branch/MemberInfo/template_generation/index.vue'),
+            meta: { 
+              title: '模板生成管理',
             }
           },
         ],
       },
-      // {
-      //   path: '/:role(branch|committee)/personnel',
-      //   component: Personnel
-      // }
-      // {
-      //   path: '/branch/personnel',
-      //   component: Personnel,
-      //   meta: { role: 'branch' }
-      // }
-      // {
-      //   path: '/branch/personnel',
-      //   component: BPersonnel
-      // }
-      // {
-      //   path: '/branch/progress/:uid',
-      //   component: () => import('@/views/Progress/index.vue'),
-      //   children: [
-      //     {
-      //       path: ':sid',
-      //       component: () => import('@/views/Progress/StepInfoDetail.vue'),
-      //       meta: { hideStepCart: true }
-      //     }
-      //   ]
-      // }
     ]
   },
   // 党委
