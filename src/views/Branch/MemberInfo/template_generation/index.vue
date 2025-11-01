@@ -22,48 +22,65 @@
                 class="submit-button"
                 @click="SubmitFile"
             >提交</el-button>
-            <!-- <el-button
-                type="primary"
-                style="width: 120px; height: 40px"
-                @click="submitUpload"
-                :disabled="fileList.length === 0"
-            >
-            提交
-            </el-button> -->
+            <div class="display" >
+                <ul v-if="templates.length">
+                    <li v-for="(item,index) in templates" :key="index">
+                        <h3>{{item.Name}}</h3>
+                        <ul>
+                            <li v-for="(url, idx) in item.Data" :key="idx">
+                                <a
+                                    :href="url"
+                                    target="_blank"
+                                    rel="noopener"
+                                    :download
+                                >
+                                     {{ url }}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { ref,computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { submitfile } from "./service/index"
 const route = useRoute()
 const router = useRouter()
-const { role } = route.params
-
+void router
+const role = computed(() => route.meta.role);
+let fileList = ref([])
+let templates = ref([])
+// console.log(role.value)
 //上传模板
 const SubmitFile = async () => {
   if (fileList.value.length === 0) {
     ElMessage.warning('请选择文件')
     return
   }
+
   const formData = new FormData()
   fileList.value.forEach((file) => {
-    formData.append('file', file)
+    formData.append('file', file.raw)
   })
-  await submitfile(formData,role)
-    .then((res) => {
-        if(res?.status === 500) {
-            ElMessage.error(`文件生成失败`);
-            return;
-        }
-        ElMessage.success('文件上传成功')
-    })
-    .catch((error) => {
-      ElMessage.error(`文件上传失败：${error} `)
-    })
+
+  try {
+    const res = await submitfile(formData, role.value)
+    console.log('接口返回：', res)
+    const result = res.data 
+    if (Array.isArray(result) && result.length > 0) {
+      templates.value = result
+      ElMessage.success('模板生成成功')
+    } else {
+      ElMessage.error('模板生成失败：返回为空')
+    }
+  } catch (error) {
+    ElMessage.error(`文件上传失败：${error}`)
+  }
 }
-let fileList = ref([])
 </script>
 <style lang="scss" scoped>
     .common-layout{
@@ -92,6 +109,26 @@ let fileList = ref([])
                 width: 100px;
                 height: 30px;
                 font-size: 20px;
+            }
+            .display {
+                display: block;
+                text-align: left;
+                
+                ul {
+                    list-style: none;
+                    padding-left: 0;
+                    margin: 0;
+                    
+                    li {
+                        text-align: left;
+                        
+                        a {
+                            display: inline-block;
+                            text-align: left;
+                            vertical-align: top;
+                        }
+                    }
+                }
             }
 
         }

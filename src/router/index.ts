@@ -120,6 +120,7 @@ const routes: Array<RouteRecordRaw> = [
             component: () => import('@/views/Branch/MemberInfo/template_generation/index.vue'),
             meta: { 
               title: '模板生成管理',
+              role: 'branch',
             }
           },
         ],
