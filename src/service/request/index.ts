@@ -2,6 +2,7 @@ import axios from 'axios'
 import type { AxiosInstance, InternalAxiosRequestConfig } from 'axios'
 import type { MYRequestConfig } from './type'
 import router from '@/router'
+import { ElMessage } from 'element-plus'
 const DEAFULT_ADDTOKEN = true
 class Request {
   instance: AxiosInstance
@@ -26,17 +27,34 @@ class Request {
     )
     this.instance.interceptors.response.use(
       (res) => {
-        // console.log('res', res.data)
-        if (res.data.code === 401) {
-          router.push('/403')
-          ElMessage.error(res.data.msg)
+        const { code, msg } = res.data ?? {}
+
+        if (code === 401) {
+          router.push('/login')
+          ElMessage.error(msg || '登录已过期，请重新登录')
           return
         }
+
+        if (code === 403) {
+          router.push('/403')
+          ElMessage.error(msg || '无权限访问')
+          return
+        }
+        if (code === 500) {
+          ElMessage.error(msg || '服务器内部错误，请稍后重试')
+          return
+        }
+
+        if (code !== undefined && code !== 0 && code !== 200) {
+          ElMessage.warning(msg || '请求失败，请稍后重试')
+          return
+        }
+
         return res.data
       },
       (err) => {
-        // console.log('err', err)
-        return err
+        ElMessage.error('网络异常，请检查网络连接')
+        return Promise.reject(err)
       }
     )
 
